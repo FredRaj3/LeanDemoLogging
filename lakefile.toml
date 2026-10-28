@@ -1,0 +1,6 @@
+name = "LeanDemoLogging"
+version = "0.1.0"
+defaultTargets = ["LeanDemoLogging"]
+
+[[lean_lib]]
+name = "LeanDemoLogging"

@@ -1,0 +1,455 @@
+{"seq":1,"depth":0,"event":"begin","phase":"declaration","declaration":"inj_comp_bad","source":"Lean C++ kernel v4.36.0-rc1"}
+{"seq":2,"depth":0,"event":"phase","phase":"statement","name":"statement"}
+{"seq":3,"depth":0,"event":"enter","phase":"statement","call":"1","operation":"check","expr":"(∀ {α : Type}, (∀ {β : Type}, (∀ {γ : Type}, (∀ {f : (α → β)}, (∀ {g : (β → γ)}, ((Function.Injective g) → ((Function.Injective f) → (Function.Injective (g ∘ f)))))))))","core":"(∀ {α : Type}, (∀ {β : Type}, (∀ {γ : Type}, (∀ {f : (α → β)}, (∀ {g : (β → γ)}, ((Function.Injective.{1, 1} β γ g) → ((Function.Injective.{1, 1} α β f) → (Function.Injective.{1, 1} α γ (Function.comp.{1, 1, 1} α β γ g f)))))))))"}
+{"seq":4,"depth":1,"event":"enter","phase":"statement","call":"2","operation":"check","expr":"Type","core":"Type"}
+{"seq":5,"depth":1,"event":"return","phase":"statement","result":"Sort 2","result_core":"Sort 2","call":"2"}
+{"seq":6,"depth":1,"event":"context","phase":"statement","name":"α","id":"_kernel_fresh.0","type":"Type","type_core":"Type"}
+{"seq":7,"depth":1,"event":"enter","phase":"statement","call":"3","operation":"check","expr":"Type","core":"Type"}
+{"seq":8,"depth":2,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":9,"depth":1,"event":"return","phase":"statement","result":"Sort 2","result_core":"Sort 2","call":"3"}
+{"seq":10,"depth":1,"event":"context","phase":"statement","name":"β","id":"_kernel_fresh.1","type":"Type","type_core":"Type"}
+{"seq":11,"depth":1,"event":"enter","phase":"statement","call":"4","operation":"check","expr":"Type","core":"Type"}
+{"seq":12,"depth":2,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":13,"depth":1,"event":"return","phase":"statement","result":"Sort 2","result_core":"Sort 2","call":"4"}
+{"seq":14,"depth":1,"event":"context","phase":"statement","name":"γ","id":"_kernel_fresh.2","type":"Type","type_core":"Type"}
+{"seq":15,"depth":1,"event":"enter","phase":"statement","call":"5","operation":"check","expr":"(α → β)","core":"(α → β)"}
+{"seq":16,"depth":2,"event":"enter","phase":"statement","call":"6","operation":"check","expr":"α","core":"α"}
+{"seq":17,"depth":2,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"6"}
+{"seq":18,"depth":2,"event":"context","phase":"statement","name":"a._@._internal._hyg.0","id":"_kernel_fresh.3","type":"α","type_core":"α"}
+{"seq":19,"depth":2,"event":"enter","phase":"statement","call":"7","operation":"check","expr":"β","core":"β"}
+{"seq":20,"depth":2,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"7"}
+{"seq":21,"depth":1,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"5"}
+{"seq":22,"depth":1,"event":"context","phase":"statement","name":"f","id":"_kernel_fresh.4","type":"(α → β)","type_core":"(α → β)"}
+{"seq":23,"depth":1,"event":"enter","phase":"statement","call":"8","operation":"check","expr":"(β → γ)","core":"(β → γ)"}
+{"seq":24,"depth":2,"event":"enter","phase":"statement","call":"9","operation":"check","expr":"β","core":"β"}
+{"seq":25,"depth":3,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":26,"depth":2,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"9"}
+{"seq":27,"depth":2,"event":"context","phase":"statement","name":"a._@._internal._hyg.0","id":"_kernel_fresh.5","type":"β","type_core":"β"}
+{"seq":28,"depth":2,"event":"enter","phase":"statement","call":"10","operation":"check","expr":"γ","core":"γ"}
+{"seq":29,"depth":2,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"10"}
+{"seq":30,"depth":1,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"8"}
+{"seq":31,"depth":1,"event":"context","phase":"statement","name":"g","id":"_kernel_fresh.6","type":"(β → γ)","type_core":"(β → γ)"}
+{"seq":32,"depth":1,"event":"enter","phase":"statement","call":"11","operation":"check","expr":"(Function.Injective g)","core":"(Function.Injective.{1, 1} β γ g)"}
+{"seq":33,"depth":2,"event":"enter","phase":"statement","call":"12","operation":"check","expr":"(Function.Injective β γ)","core":"(Function.Injective.{1, 1} β γ)"}
+{"seq":34,"depth":3,"event":"enter","phase":"statement","call":"13","operation":"check","expr":"(Function.Injective β)","core":"(Function.Injective.{1, 1} β)"}
+{"seq":35,"depth":4,"event":"enter","phase":"statement","call":"14","operation":"check","expr":"Function.Injective","core":"Function.Injective.{1, 1}"}
+{"seq":36,"depth":4,"event":"return","phase":"statement","result":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","result_core":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","call":"14"}
+{"seq":37,"depth":4,"event":"enter","phase":"statement","call":"15","operation":"check","expr":"β","core":"β"}
+{"seq":38,"depth":5,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":39,"depth":4,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"15"}
+{"seq":40,"depth":4,"event":"argument","phase":"statement","actual":"Type","expected":"Type"}
+{"seq":41,"depth":4,"event":"enter","phase":"statement","call":"16","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":42,"depth":4,"event":"return","phase":"statement","result":"true","call":"16"}
+{"seq":43,"depth":3,"event":"return","phase":"statement","result":"(∀ {β : Type}, ((β → β) → Prop))","result_core":"(∀ {β : Type}, ((β → β) → Prop))","call":"13"}
+{"seq":44,"depth":3,"event":"enter","phase":"statement","call":"17","operation":"check","expr":"γ","core":"γ"}
+{"seq":45,"depth":4,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":46,"depth":3,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"17"}
+{"seq":47,"depth":3,"event":"argument","phase":"statement","actual":"Type","expected":"Type"}
+{"seq":48,"depth":3,"event":"enter","phase":"statement","call":"18","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":49,"depth":3,"event":"return","phase":"statement","result":"true","call":"18"}
+{"seq":50,"depth":2,"event":"return","phase":"statement","result":"((β → γ) → Prop)","result_core":"((β → γ) → Prop)","call":"12"}
+{"seq":51,"depth":2,"event":"enter","phase":"statement","call":"19","operation":"check","expr":"g","core":"g"}
+{"seq":52,"depth":2,"event":"return","phase":"statement","result":"(β → γ)","result_core":"(β → γ)","call":"19"}
+{"seq":53,"depth":2,"event":"argument","phase":"statement","actual":"(β → γ)","expected":"(β → γ)"}
+{"seq":54,"depth":2,"event":"enter","phase":"statement","call":"20","operation":"defeq","expr":"(β → γ)","core":"(β → γ)","other":"(β → γ)","other_core":"(β → γ)"}
+{"seq":55,"depth":2,"event":"return","phase":"statement","result":"true","call":"20"}
+{"seq":56,"depth":1,"event":"return","phase":"statement","result":"Prop","result_core":"Prop","call":"11"}
+{"seq":57,"depth":1,"event":"context","phase":"statement","name":"hg","id":"_kernel_fresh.7","type":"(Function.Injective g)","type_core":"(Function.Injective.{1, 1} β γ g)"}
+{"seq":58,"depth":1,"event":"enter","phase":"statement","call":"21","operation":"check","expr":"(Function.Injective f)","core":"(Function.Injective.{1, 1} α β f)"}
+{"seq":59,"depth":2,"event":"enter","phase":"statement","call":"22","operation":"check","expr":"(Function.Injective α β)","core":"(Function.Injective.{1, 1} α β)"}
+{"seq":60,"depth":3,"event":"enter","phase":"statement","call":"23","operation":"check","expr":"(Function.Injective α)","core":"(Function.Injective.{1, 1} α)"}
+{"seq":61,"depth":4,"event":"enter","phase":"statement","call":"24","operation":"check","expr":"Function.Injective","core":"Function.Injective.{1, 1}"}
+{"seq":62,"depth":5,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":63,"depth":4,"event":"return","phase":"statement","result":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","result_core":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","call":"24"}
+{"seq":64,"depth":4,"event":"enter","phase":"statement","call":"25","operation":"check","expr":"α","core":"α"}
+{"seq":65,"depth":5,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":66,"depth":4,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"25"}
+{"seq":67,"depth":4,"event":"argument","phase":"statement","actual":"Type","expected":"Type"}
+{"seq":68,"depth":4,"event":"enter","phase":"statement","call":"26","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":69,"depth":4,"event":"return","phase":"statement","result":"true","call":"26"}
+{"seq":70,"depth":3,"event":"return","phase":"statement","result":"(∀ {β : Type}, ((α → β) → Prop))","result_core":"(∀ {β : Type}, ((α → β) → Prop))","call":"23"}
+{"seq":71,"depth":3,"event":"enter","phase":"statement","call":"27","operation":"check","expr":"β","core":"β"}
+{"seq":72,"depth":4,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":73,"depth":3,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"27"}
+{"seq":74,"depth":3,"event":"argument","phase":"statement","actual":"Type","expected":"Type"}
+{"seq":75,"depth":3,"event":"enter","phase":"statement","call":"28","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":76,"depth":3,"event":"return","phase":"statement","result":"true","call":"28"}
+{"seq":77,"depth":2,"event":"return","phase":"statement","result":"((α → β) → Prop)","result_core":"((α → β) → Prop)","call":"22"}
+{"seq":78,"depth":2,"event":"enter","phase":"statement","call":"29","operation":"check","expr":"f","core":"f"}
+{"seq":79,"depth":2,"event":"return","phase":"statement","result":"(α → β)","result_core":"(α → β)","call":"29"}
+{"seq":80,"depth":2,"event":"argument","phase":"statement","actual":"(α → β)","expected":"(α → β)"}
+{"seq":81,"depth":2,"event":"enter","phase":"statement","call":"30","operation":"defeq","expr":"(α → β)","core":"(α → β)","other":"(α → β)","other_core":"(α → β)"}
+{"seq":82,"depth":2,"event":"return","phase":"statement","result":"true","call":"30"}
+{"seq":83,"depth":1,"event":"return","phase":"statement","result":"Prop","result_core":"Prop","call":"21"}
+{"seq":84,"depth":1,"event":"context","phase":"statement","name":"hf","id":"_kernel_fresh.8","type":"(Function.Injective f)","type_core":"(Function.Injective.{1, 1} α β f)"}
+{"seq":85,"depth":1,"event":"enter","phase":"statement","call":"31","operation":"check","expr":"(Function.Injective (g ∘ f))","core":"(Function.Injective.{1, 1} α γ (Function.comp.{1, 1, 1} α β γ g f))"}
+{"seq":86,"depth":2,"event":"enter","phase":"statement","call":"32","operation":"check","expr":"(Function.Injective α γ)","core":"(Function.Injective.{1, 1} α γ)"}
+{"seq":87,"depth":3,"event":"enter","phase":"statement","call":"33","operation":"check","expr":"(Function.Injective α)","core":"(Function.Injective.{1, 1} α)"}
+{"seq":88,"depth":4,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":89,"depth":3,"event":"return","phase":"statement","result":"(∀ {β : Type}, ((α → β) → Prop))","result_core":"(∀ {β : Type}, ((α → β) → Prop))","call":"33"}
+{"seq":90,"depth":3,"event":"enter","phase":"statement","call":"34","operation":"check","expr":"γ","core":"γ"}
+{"seq":91,"depth":4,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":92,"depth":3,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"34"}
+{"seq":93,"depth":3,"event":"argument","phase":"statement","actual":"Type","expected":"Type"}
+{"seq":94,"depth":3,"event":"enter","phase":"statement","call":"35","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":95,"depth":3,"event":"return","phase":"statement","result":"true","call":"35"}
+{"seq":96,"depth":2,"event":"return","phase":"statement","result":"((α → γ) → Prop)","result_core":"((α → γ) → Prop)","call":"32"}
+{"seq":97,"depth":2,"event":"enter","phase":"statement","call":"36","operation":"check","expr":"(g ∘ f)","core":"(Function.comp.{1, 1, 1} α β γ g f)"}
+{"seq":98,"depth":3,"event":"enter","phase":"statement","call":"37","operation":"check","expr":"(Function.comp α β γ g)","core":"(Function.comp.{1, 1, 1} α β γ g)"}
+{"seq":99,"depth":4,"event":"enter","phase":"statement","call":"38","operation":"check","expr":"(Function.comp α β γ)","core":"(Function.comp.{1, 1, 1} α β γ)"}
+{"seq":100,"depth":5,"event":"enter","phase":"statement","call":"39","operation":"check","expr":"(Function.comp α β)","core":"(Function.comp.{1, 1, 1} α β)"}
+{"seq":101,"depth":6,"event":"enter","phase":"statement","call":"40","operation":"check","expr":"(Function.comp α)","core":"(Function.comp.{1, 1, 1} α)"}
+{"seq":102,"depth":7,"event":"enter","phase":"statement","call":"41","operation":"check","expr":"Function.comp","core":"Function.comp.{1, 1, 1}"}
+{"seq":103,"depth":7,"event":"return","phase":"statement","result":"(∀ {α : Type}, (∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))))","result_core":"(∀ {α : Type}, (∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))))","call":"41"}
+{"seq":104,"depth":7,"event":"enter","phase":"statement","call":"42","operation":"check","expr":"α","core":"α"}
+{"seq":105,"depth":8,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":106,"depth":7,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"42"}
+{"seq":107,"depth":7,"event":"argument","phase":"statement","actual":"Type","expected":"Type"}
+{"seq":108,"depth":7,"event":"enter","phase":"statement","call":"43","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":109,"depth":7,"event":"return","phase":"statement","result":"true","call":"43"}
+{"seq":110,"depth":6,"event":"return","phase":"statement","result":"(∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ)))))","result_core":"(∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ)))))","call":"40"}
+{"seq":111,"depth":6,"event":"enter","phase":"statement","call":"44","operation":"check","expr":"β","core":"β"}
+{"seq":112,"depth":7,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":113,"depth":6,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"44"}
+{"seq":114,"depth":6,"event":"argument","phase":"statement","actual":"Type","expected":"Type"}
+{"seq":115,"depth":6,"event":"enter","phase":"statement","call":"45","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":116,"depth":6,"event":"return","phase":"statement","result":"true","call":"45"}
+{"seq":117,"depth":5,"event":"return","phase":"statement","result":"(∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))","result_core":"(∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))","call":"39"}
+{"seq":118,"depth":5,"event":"enter","phase":"statement","call":"46","operation":"check","expr":"γ","core":"γ"}
+{"seq":119,"depth":6,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":120,"depth":5,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"46"}
+{"seq":121,"depth":5,"event":"argument","phase":"statement","actual":"Type","expected":"Type"}
+{"seq":122,"depth":5,"event":"enter","phase":"statement","call":"47","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":123,"depth":5,"event":"return","phase":"statement","result":"true","call":"47"}
+{"seq":124,"depth":4,"event":"return","phase":"statement","result":"((β → γ) → ((α → β) → (α → γ)))","result_core":"((β → γ) → ((α → β) → (α → γ)))","call":"38"}
+{"seq":125,"depth":4,"event":"enter","phase":"statement","call":"48","operation":"check","expr":"g","core":"g"}
+{"seq":126,"depth":5,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":127,"depth":4,"event":"return","phase":"statement","result":"(β → γ)","result_core":"(β → γ)","call":"48"}
+{"seq":128,"depth":4,"event":"argument","phase":"statement","actual":"(β → γ)","expected":"(β → γ)"}
+{"seq":129,"depth":4,"event":"enter","phase":"statement","call":"49","operation":"defeq","expr":"(β → γ)","core":"(β → γ)","other":"(β → γ)","other_core":"(β → γ)"}
+{"seq":130,"depth":4,"event":"return","phase":"statement","result":"true","call":"49"}
+{"seq":131,"depth":3,"event":"return","phase":"statement","result":"((α → β) → (α → γ))","result_core":"((α → β) → (α → γ))","call":"37"}
+{"seq":132,"depth":3,"event":"enter","phase":"statement","call":"50","operation":"check","expr":"f","core":"f"}
+{"seq":133,"depth":4,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":134,"depth":3,"event":"return","phase":"statement","result":"(α → β)","result_core":"(α → β)","call":"50"}
+{"seq":135,"depth":3,"event":"argument","phase":"statement","actual":"(α → β)","expected":"(α → β)"}
+{"seq":136,"depth":3,"event":"enter","phase":"statement","call":"51","operation":"defeq","expr":"(α → β)","core":"(α → β)","other":"(α → β)","other_core":"(α → β)"}
+{"seq":137,"depth":3,"event":"return","phase":"statement","result":"true","call":"51"}
+{"seq":138,"depth":2,"event":"return","phase":"statement","result":"(α → γ)","result_core":"(α → γ)","call":"36"}
+{"seq":139,"depth":2,"event":"argument","phase":"statement","actual":"(α → γ)","expected":"(α → γ)"}
+{"seq":140,"depth":2,"event":"enter","phase":"statement","call":"52","operation":"defeq","expr":"(α → γ)","core":"(α → γ)","other":"(α → γ)","other_core":"(α → γ)"}
+{"seq":141,"depth":2,"event":"return","phase":"statement","result":"true","call":"52"}
+{"seq":142,"depth":1,"event":"return","phase":"statement","result":"Prop","result_core":"Prop","call":"31"}
+{"seq":143,"depth":0,"event":"return","phase":"statement","result":"Prop","result_core":"Prop","call":"1"}
+{"seq":144,"depth":0,"event":"enter","phase":"statement","call":"53","operation":"infer","expr":"(∀ {α : Type}, (∀ {β : Type}, (∀ {γ : Type}, (∀ {f : (α → β)}, (∀ {g : (β → γ)}, ((Function.Injective g) → ((Function.Injective f) → (Function.Injective (g ∘ f)))))))))","core":"(∀ {α : Type}, (∀ {β : Type}, (∀ {γ : Type}, (∀ {f : (α → β)}, (∀ {g : (β → γ)}, ((Function.Injective.{1, 1} β γ g) → ((Function.Injective.{1, 1} α β f) → (Function.Injective.{1, 1} α γ (Function.comp.{1, 1, 1} α β γ g f)))))))))"}
+{"seq":145,"depth":1,"event":"enter","phase":"statement","call":"54","operation":"infer","expr":"Type","core":"Type"}
+{"seq":146,"depth":1,"event":"return","phase":"statement","result":"Sort 2","result_core":"Sort 2","call":"54"}
+{"seq":147,"depth":1,"event":"context","phase":"statement","name":"α","id":"_kernel_fresh.9","type":"Type","type_core":"Type"}
+{"seq":148,"depth":1,"event":"enter","phase":"statement","call":"55","operation":"infer","expr":"Type","core":"Type"}
+{"seq":149,"depth":2,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":150,"depth":1,"event":"return","phase":"statement","result":"Sort 2","result_core":"Sort 2","call":"55"}
+{"seq":151,"depth":1,"event":"context","phase":"statement","name":"β","id":"_kernel_fresh.10","type":"Type","type_core":"Type"}
+{"seq":152,"depth":1,"event":"enter","phase":"statement","call":"56","operation":"infer","expr":"Type","core":"Type"}
+{"seq":153,"depth":2,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":154,"depth":1,"event":"return","phase":"statement","result":"Sort 2","result_core":"Sort 2","call":"56"}
+{"seq":155,"depth":1,"event":"context","phase":"statement","name":"γ","id":"_kernel_fresh.11","type":"Type","type_core":"Type"}
+{"seq":156,"depth":1,"event":"enter","phase":"statement","call":"57","operation":"infer","expr":"(α → β)","core":"(α → β)"}
+{"seq":157,"depth":2,"event":"enter","phase":"statement","call":"58","operation":"infer","expr":"α","core":"α"}
+{"seq":158,"depth":2,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"58"}
+{"seq":159,"depth":2,"event":"context","phase":"statement","name":"a._@._internal._hyg.0","id":"_kernel_fresh.12","type":"α","type_core":"α"}
+{"seq":160,"depth":2,"event":"enter","phase":"statement","call":"59","operation":"infer","expr":"β","core":"β"}
+{"seq":161,"depth":2,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"59"}
+{"seq":162,"depth":1,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"57"}
+{"seq":163,"depth":1,"event":"context","phase":"statement","name":"f","id":"_kernel_fresh.13","type":"(α → β)","type_core":"(α → β)"}
+{"seq":164,"depth":1,"event":"enter","phase":"statement","call":"60","operation":"infer","expr":"(β → γ)","core":"(β → γ)"}
+{"seq":165,"depth":2,"event":"enter","phase":"statement","call":"61","operation":"infer","expr":"β","core":"β"}
+{"seq":166,"depth":3,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":167,"depth":2,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"61"}
+{"seq":168,"depth":2,"event":"context","phase":"statement","name":"a._@._internal._hyg.0","id":"_kernel_fresh.14","type":"β","type_core":"β"}
+{"seq":169,"depth":2,"event":"enter","phase":"statement","call":"62","operation":"infer","expr":"γ","core":"γ"}
+{"seq":170,"depth":2,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"62"}
+{"seq":171,"depth":1,"event":"return","phase":"statement","result":"Type","result_core":"Type","call":"60"}
+{"seq":172,"depth":1,"event":"context","phase":"statement","name":"g","id":"_kernel_fresh.15","type":"(β → γ)","type_core":"(β → γ)"}
+{"seq":173,"depth":1,"event":"enter","phase":"statement","call":"63","operation":"infer","expr":"(Function.Injective g)","core":"(Function.Injective.{1, 1} β γ g)"}
+{"seq":174,"depth":2,"event":"enter","phase":"statement","call":"64","operation":"infer","expr":"Function.Injective","core":"Function.Injective.{1, 1}"}
+{"seq":175,"depth":2,"event":"return","phase":"statement","result":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","result_core":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","call":"64"}
+{"seq":176,"depth":1,"event":"return","phase":"statement","result":"Prop","result_core":"Prop","call":"63"}
+{"seq":177,"depth":1,"event":"context","phase":"statement","name":"hg","id":"_kernel_fresh.16","type":"(Function.Injective g)","type_core":"(Function.Injective.{1, 1} β γ g)"}
+{"seq":178,"depth":1,"event":"enter","phase":"statement","call":"65","operation":"infer","expr":"(Function.Injective f)","core":"(Function.Injective.{1, 1} α β f)"}
+{"seq":179,"depth":2,"event":"enter","phase":"statement","call":"66","operation":"infer","expr":"Function.Injective","core":"Function.Injective.{1, 1}"}
+{"seq":180,"depth":3,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":181,"depth":2,"event":"return","phase":"statement","result":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","result_core":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","call":"66"}
+{"seq":182,"depth":1,"event":"return","phase":"statement","result":"Prop","result_core":"Prop","call":"65"}
+{"seq":183,"depth":1,"event":"context","phase":"statement","name":"hf","id":"_kernel_fresh.17","type":"(Function.Injective f)","type_core":"(Function.Injective.{1, 1} α β f)"}
+{"seq":184,"depth":1,"event":"enter","phase":"statement","call":"67","operation":"infer","expr":"(Function.Injective (g ∘ f))","core":"(Function.Injective.{1, 1} α γ (Function.comp.{1, 1, 1} α β γ g f))"}
+{"seq":185,"depth":2,"event":"enter","phase":"statement","call":"68","operation":"infer","expr":"Function.Injective","core":"Function.Injective.{1, 1}"}
+{"seq":186,"depth":3,"event":"cache","phase":"statement","name":"m_infer_type[infer_only]"}
+{"seq":187,"depth":2,"event":"return","phase":"statement","result":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","result_core":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","call":"68"}
+{"seq":188,"depth":1,"event":"return","phase":"statement","result":"Prop","result_core":"Prop","call":"67"}
+{"seq":189,"depth":0,"event":"return","phase":"statement","result":"Prop","result_core":"Prop","call":"53"}
+{"seq":190,"depth":0,"event":"phase","phase":"proof","name":"proof"}
+{"seq":191,"depth":0,"event":"enter","phase":"proof","call":"69","operation":"check","expr":"(fun {α : Type} => (fun {β : Type} => (fun {γ : Type} => (fun {f : (α → β)} => (fun {g : (β → γ)} => (fun (hg : (Function.Injective g)) => (fun (hf : (Function.Injective f)) => (fun (x : α) => (fun (y : α) => (fun (h0 : (((g ∘ f) x) = ((g ∘ f) y))) => (hf x y h0)))))))))))","core":"(fun {α : Type} => (fun {β : Type} => (fun {γ : Type} => (fun {f : (α → β)} => (fun {g : (β → γ)} => (fun (hg : (Function.Injective.{1, 1} β γ g)) => (fun (hf : (Function.Injective.{1, 1} α β f)) => (fun (x : α) => (fun (y : α) => (fun (h0 : (Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x) (Function.comp.{1, 1, 1} α β γ g f y))) => (hf x y h0)))))))))))"}
+{"seq":192,"depth":1,"event":"enter","phase":"proof","call":"70","operation":"check","expr":"Type","core":"Type"}
+{"seq":193,"depth":2,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":194,"depth":1,"event":"return","phase":"proof","result":"Sort 2","result_core":"Sort 2","call":"70"}
+{"seq":195,"depth":1,"event":"context","phase":"proof","name":"α","id":"_kernel_fresh.18","type":"Type","type_core":"Type"}
+{"seq":196,"depth":1,"event":"enter","phase":"proof","call":"71","operation":"check","expr":"Type","core":"Type"}
+{"seq":197,"depth":2,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":198,"depth":1,"event":"return","phase":"proof","result":"Sort 2","result_core":"Sort 2","call":"71"}
+{"seq":199,"depth":1,"event":"context","phase":"proof","name":"β","id":"_kernel_fresh.19","type":"Type","type_core":"Type"}
+{"seq":200,"depth":1,"event":"enter","phase":"proof","call":"72","operation":"check","expr":"Type","core":"Type"}
+{"seq":201,"depth":2,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":202,"depth":1,"event":"return","phase":"proof","result":"Sort 2","result_core":"Sort 2","call":"72"}
+{"seq":203,"depth":1,"event":"context","phase":"proof","name":"γ","id":"_kernel_fresh.20","type":"Type","type_core":"Type"}
+{"seq":204,"depth":1,"event":"enter","phase":"proof","call":"73","operation":"check","expr":"(α → β)","core":"(α → β)"}
+{"seq":205,"depth":2,"event":"enter","phase":"proof","call":"74","operation":"check","expr":"α","core":"α"}
+{"seq":206,"depth":2,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"74"}
+{"seq":207,"depth":2,"event":"context","phase":"proof","name":"a._@._internal._hyg.0","id":"_kernel_fresh.21","type":"α","type_core":"α"}
+{"seq":208,"depth":2,"event":"enter","phase":"proof","call":"75","operation":"check","expr":"β","core":"β"}
+{"seq":209,"depth":2,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"75"}
+{"seq":210,"depth":1,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"73"}
+{"seq":211,"depth":1,"event":"context","phase":"proof","name":"f","id":"_kernel_fresh.22","type":"(α → β)","type_core":"(α → β)"}
+{"seq":212,"depth":1,"event":"enter","phase":"proof","call":"76","operation":"check","expr":"(β → γ)","core":"(β → γ)"}
+{"seq":213,"depth":2,"event":"enter","phase":"proof","call":"77","operation":"check","expr":"β","core":"β"}
+{"seq":214,"depth":3,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":215,"depth":2,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"77"}
+{"seq":216,"depth":2,"event":"context","phase":"proof","name":"a._@._internal._hyg.0","id":"_kernel_fresh.23","type":"β","type_core":"β"}
+{"seq":217,"depth":2,"event":"enter","phase":"proof","call":"78","operation":"check","expr":"γ","core":"γ"}
+{"seq":218,"depth":2,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"78"}
+{"seq":219,"depth":1,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"76"}
+{"seq":220,"depth":1,"event":"context","phase":"proof","name":"g","id":"_kernel_fresh.24","type":"(β → γ)","type_core":"(β → γ)"}
+{"seq":221,"depth":1,"event":"enter","phase":"proof","call":"79","operation":"check","expr":"(Function.Injective g)","core":"(Function.Injective.{1, 1} β γ g)"}
+{"seq":222,"depth":2,"event":"enter","phase":"proof","call":"80","operation":"check","expr":"(Function.Injective β γ)","core":"(Function.Injective.{1, 1} β γ)"}
+{"seq":223,"depth":3,"event":"enter","phase":"proof","call":"81","operation":"check","expr":"(Function.Injective β)","core":"(Function.Injective.{1, 1} β)"}
+{"seq":224,"depth":4,"event":"enter","phase":"proof","call":"82","operation":"check","expr":"Function.Injective","core":"Function.Injective.{1, 1}"}
+{"seq":225,"depth":5,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":226,"depth":4,"event":"return","phase":"proof","result":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","result_core":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","call":"82"}
+{"seq":227,"depth":4,"event":"enter","phase":"proof","call":"83","operation":"check","expr":"β","core":"β"}
+{"seq":228,"depth":5,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":229,"depth":4,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"83"}
+{"seq":230,"depth":4,"event":"argument","phase":"proof","actual":"Type","expected":"Type"}
+{"seq":231,"depth":4,"event":"enter","phase":"proof","call":"84","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":232,"depth":4,"event":"return","phase":"proof","result":"true","call":"84"}
+{"seq":233,"depth":3,"event":"return","phase":"proof","result":"(∀ {β : Type}, ((β → β) → Prop))","result_core":"(∀ {β : Type}, ((β → β) → Prop))","call":"81"}
+{"seq":234,"depth":3,"event":"enter","phase":"proof","call":"85","operation":"check","expr":"γ","core":"γ"}
+{"seq":235,"depth":4,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":236,"depth":3,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"85"}
+{"seq":237,"depth":3,"event":"argument","phase":"proof","actual":"Type","expected":"Type"}
+{"seq":238,"depth":3,"event":"enter","phase":"proof","call":"86","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":239,"depth":3,"event":"return","phase":"proof","result":"true","call":"86"}
+{"seq":240,"depth":2,"event":"return","phase":"proof","result":"((β → γ) → Prop)","result_core":"((β → γ) → Prop)","call":"80"}
+{"seq":241,"depth":2,"event":"enter","phase":"proof","call":"87","operation":"check","expr":"g","core":"g"}
+{"seq":242,"depth":2,"event":"return","phase":"proof","result":"(β → γ)","result_core":"(β → γ)","call":"87"}
+{"seq":243,"depth":2,"event":"argument","phase":"proof","actual":"(β → γ)","expected":"(β → γ)"}
+{"seq":244,"depth":2,"event":"enter","phase":"proof","call":"88","operation":"defeq","expr":"(β → γ)","core":"(β → γ)","other":"(β → γ)","other_core":"(β → γ)"}
+{"seq":245,"depth":2,"event":"return","phase":"proof","result":"true","call":"88"}
+{"seq":246,"depth":1,"event":"return","phase":"proof","result":"Prop","result_core":"Prop","call":"79"}
+{"seq":247,"depth":1,"event":"context","phase":"proof","name":"hg","id":"_kernel_fresh.25","type":"(Function.Injective g)","type_core":"(Function.Injective.{1, 1} β γ g)"}
+{"seq":248,"depth":1,"event":"enter","phase":"proof","call":"89","operation":"check","expr":"(Function.Injective f)","core":"(Function.Injective.{1, 1} α β f)"}
+{"seq":249,"depth":2,"event":"enter","phase":"proof","call":"90","operation":"check","expr":"(Function.Injective α β)","core":"(Function.Injective.{1, 1} α β)"}
+{"seq":250,"depth":3,"event":"enter","phase":"proof","call":"91","operation":"check","expr":"(Function.Injective α)","core":"(Function.Injective.{1, 1} α)"}
+{"seq":251,"depth":4,"event":"enter","phase":"proof","call":"92","operation":"check","expr":"Function.Injective","core":"Function.Injective.{1, 1}"}
+{"seq":252,"depth":5,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":253,"depth":4,"event":"return","phase":"proof","result":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","result_core":"(∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))","call":"92"}
+{"seq":254,"depth":4,"event":"enter","phase":"proof","call":"93","operation":"check","expr":"α","core":"α"}
+{"seq":255,"depth":5,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":256,"depth":4,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"93"}
+{"seq":257,"depth":4,"event":"argument","phase":"proof","actual":"Type","expected":"Type"}
+{"seq":258,"depth":4,"event":"enter","phase":"proof","call":"94","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":259,"depth":4,"event":"return","phase":"proof","result":"true","call":"94"}
+{"seq":260,"depth":3,"event":"return","phase":"proof","result":"(∀ {β : Type}, ((α → β) → Prop))","result_core":"(∀ {β : Type}, ((α → β) → Prop))","call":"91"}
+{"seq":261,"depth":3,"event":"enter","phase":"proof","call":"95","operation":"check","expr":"β","core":"β"}
+{"seq":262,"depth":4,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":263,"depth":3,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"95"}
+{"seq":264,"depth":3,"event":"argument","phase":"proof","actual":"Type","expected":"Type"}
+{"seq":265,"depth":3,"event":"enter","phase":"proof","call":"96","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":266,"depth":3,"event":"return","phase":"proof","result":"true","call":"96"}
+{"seq":267,"depth":2,"event":"return","phase":"proof","result":"((α → β) → Prop)","result_core":"((α → β) → Prop)","call":"90"}
+{"seq":268,"depth":2,"event":"enter","phase":"proof","call":"97","operation":"check","expr":"f","core":"f"}
+{"seq":269,"depth":2,"event":"return","phase":"proof","result":"(α → β)","result_core":"(α → β)","call":"97"}
+{"seq":270,"depth":2,"event":"argument","phase":"proof","actual":"(α → β)","expected":"(α → β)"}
+{"seq":271,"depth":2,"event":"enter","phase":"proof","call":"98","operation":"defeq","expr":"(α → β)","core":"(α → β)","other":"(α → β)","other_core":"(α → β)"}
+{"seq":272,"depth":2,"event":"return","phase":"proof","result":"true","call":"98"}
+{"seq":273,"depth":1,"event":"return","phase":"proof","result":"Prop","result_core":"Prop","call":"89"}
+{"seq":274,"depth":1,"event":"context","phase":"proof","name":"hf","id":"_kernel_fresh.26","type":"(Function.Injective f)","type_core":"(Function.Injective.{1, 1} α β f)"}
+{"seq":275,"depth":1,"event":"enter","phase":"proof","call":"99","operation":"check","expr":"α","core":"α"}
+{"seq":276,"depth":2,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":277,"depth":1,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"99"}
+{"seq":278,"depth":1,"event":"context","phase":"proof","name":"x","id":"_kernel_fresh.27","type":"α","type_core":"α"}
+{"seq":279,"depth":1,"event":"enter","phase":"proof","call":"100","operation":"check","expr":"α","core":"α"}
+{"seq":280,"depth":2,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":281,"depth":1,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"100"}
+{"seq":282,"depth":1,"event":"context","phase":"proof","name":"y","id":"_kernel_fresh.28","type":"α","type_core":"α"}
+{"seq":283,"depth":1,"event":"enter","phase":"proof","call":"101","operation":"check","expr":"(((g ∘ f) x) = ((g ∘ f) y))","core":"(Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x) (Function.comp.{1, 1, 1} α β γ g f y))"}
+{"seq":284,"depth":2,"event":"enter","phase":"proof","call":"102","operation":"check","expr":"(Eq γ ((g ∘ f) x))","core":"(Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x))"}
+{"seq":285,"depth":3,"event":"enter","phase":"proof","call":"103","operation":"check","expr":"(Eq γ)","core":"(Eq.{1} γ)"}
+{"seq":286,"depth":4,"event":"enter","phase":"proof","call":"104","operation":"check","expr":"Eq","core":"Eq.{1}"}
+{"seq":287,"depth":4,"event":"return","phase":"proof","result":"(∀ {α : Type}, (α → (α → Prop)))","result_core":"(∀ {α : Type}, (α → (α → Prop)))","call":"104"}
+{"seq":288,"depth":4,"event":"enter","phase":"proof","call":"105","operation":"check","expr":"γ","core":"γ"}
+{"seq":289,"depth":5,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":290,"depth":4,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"105"}
+{"seq":291,"depth":4,"event":"argument","phase":"proof","actual":"Type","expected":"Type"}
+{"seq":292,"depth":4,"event":"enter","phase":"proof","call":"106","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":293,"depth":4,"event":"return","phase":"proof","result":"true","call":"106"}
+{"seq":294,"depth":3,"event":"return","phase":"proof","result":"(γ → (γ → Prop))","result_core":"(γ → (γ → Prop))","call":"103"}
+{"seq":295,"depth":3,"event":"enter","phase":"proof","call":"107","operation":"check","expr":"((g ∘ f) x)","core":"(Function.comp.{1, 1, 1} α β γ g f x)"}
+{"seq":296,"depth":4,"event":"enter","phase":"proof","call":"108","operation":"check","expr":"(g ∘ f)","core":"(Function.comp.{1, 1, 1} α β γ g f)"}
+{"seq":297,"depth":5,"event":"enter","phase":"proof","call":"109","operation":"check","expr":"(Function.comp α β γ g)","core":"(Function.comp.{1, 1, 1} α β γ g)"}
+{"seq":298,"depth":6,"event":"enter","phase":"proof","call":"110","operation":"check","expr":"(Function.comp α β γ)","core":"(Function.comp.{1, 1, 1} α β γ)"}
+{"seq":299,"depth":7,"event":"enter","phase":"proof","call":"111","operation":"check","expr":"(Function.comp α β)","core":"(Function.comp.{1, 1, 1} α β)"}
+{"seq":300,"depth":8,"event":"enter","phase":"proof","call":"112","operation":"check","expr":"(Function.comp α)","core":"(Function.comp.{1, 1, 1} α)"}
+{"seq":301,"depth":9,"event":"enter","phase":"proof","call":"113","operation":"check","expr":"Function.comp","core":"Function.comp.{1, 1, 1}"}
+{"seq":302,"depth":10,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":303,"depth":9,"event":"return","phase":"proof","result":"(∀ {α : Type}, (∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))))","result_core":"(∀ {α : Type}, (∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))))","call":"113"}
+{"seq":304,"depth":9,"event":"enter","phase":"proof","call":"114","operation":"check","expr":"α","core":"α"}
+{"seq":305,"depth":10,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":306,"depth":9,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"114"}
+{"seq":307,"depth":9,"event":"argument","phase":"proof","actual":"Type","expected":"Type"}
+{"seq":308,"depth":9,"event":"enter","phase":"proof","call":"115","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":309,"depth":9,"event":"return","phase":"proof","result":"true","call":"115"}
+{"seq":310,"depth":8,"event":"return","phase":"proof","result":"(∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ)))))","result_core":"(∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ)))))","call":"112"}
+{"seq":311,"depth":8,"event":"enter","phase":"proof","call":"116","operation":"check","expr":"β","core":"β"}
+{"seq":312,"depth":9,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":313,"depth":8,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"116"}
+{"seq":314,"depth":8,"event":"argument","phase":"proof","actual":"Type","expected":"Type"}
+{"seq":315,"depth":8,"event":"enter","phase":"proof","call":"117","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":316,"depth":8,"event":"return","phase":"proof","result":"true","call":"117"}
+{"seq":317,"depth":7,"event":"return","phase":"proof","result":"(∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))","result_core":"(∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))","call":"111"}
+{"seq":318,"depth":7,"event":"enter","phase":"proof","call":"118","operation":"check","expr":"γ","core":"γ"}
+{"seq":319,"depth":8,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":320,"depth":7,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"118"}
+{"seq":321,"depth":7,"event":"argument","phase":"proof","actual":"Type","expected":"Type"}
+{"seq":322,"depth":7,"event":"enter","phase":"proof","call":"119","operation":"defeq","expr":"Type","core":"Type","other":"Type","other_core":"Type"}
+{"seq":323,"depth":7,"event":"return","phase":"proof","result":"true","call":"119"}
+{"seq":324,"depth":6,"event":"return","phase":"proof","result":"((β → γ) → ((α → β) → (α → γ)))","result_core":"((β → γ) → ((α → β) → (α → γ)))","call":"110"}
+{"seq":325,"depth":6,"event":"enter","phase":"proof","call":"120","operation":"check","expr":"g","core":"g"}
+{"seq":326,"depth":7,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":327,"depth":6,"event":"return","phase":"proof","result":"(β → γ)","result_core":"(β → γ)","call":"120"}
+{"seq":328,"depth":6,"event":"argument","phase":"proof","actual":"(β → γ)","expected":"(β → γ)"}
+{"seq":329,"depth":6,"event":"enter","phase":"proof","call":"121","operation":"defeq","expr":"(β → γ)","core":"(β → γ)","other":"(β → γ)","other_core":"(β → γ)"}
+{"seq":330,"depth":6,"event":"return","phase":"proof","result":"true","call":"121"}
+{"seq":331,"depth":5,"event":"return","phase":"proof","result":"((α → β) → (α → γ))","result_core":"((α → β) → (α → γ))","call":"109"}
+{"seq":332,"depth":5,"event":"enter","phase":"proof","call":"122","operation":"check","expr":"f","core":"f"}
+{"seq":333,"depth":6,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":334,"depth":5,"event":"return","phase":"proof","result":"(α → β)","result_core":"(α → β)","call":"122"}
+{"seq":335,"depth":5,"event":"argument","phase":"proof","actual":"(α → β)","expected":"(α → β)"}
+{"seq":336,"depth":5,"event":"enter","phase":"proof","call":"123","operation":"defeq","expr":"(α → β)","core":"(α → β)","other":"(α → β)","other_core":"(α → β)"}
+{"seq":337,"depth":5,"event":"return","phase":"proof","result":"true","call":"123"}
+{"seq":338,"depth":4,"event":"return","phase":"proof","result":"(α → γ)","result_core":"(α → γ)","call":"108"}
+{"seq":339,"depth":4,"event":"enter","phase":"proof","call":"124","operation":"check","expr":"x","core":"x"}
+{"seq":340,"depth":4,"event":"return","phase":"proof","result":"α","result_core":"α","call":"124"}
+{"seq":341,"depth":4,"event":"argument","phase":"proof","actual":"α","expected":"α"}
+{"seq":342,"depth":4,"event":"enter","phase":"proof","call":"125","operation":"defeq","expr":"α","core":"α","other":"α","other_core":"α"}
+{"seq":343,"depth":4,"event":"return","phase":"proof","result":"true","call":"125"}
+{"seq":344,"depth":3,"event":"return","phase":"proof","result":"γ","result_core":"γ","call":"107"}
+{"seq":345,"depth":3,"event":"argument","phase":"proof","actual":"γ","expected":"γ"}
+{"seq":346,"depth":3,"event":"enter","phase":"proof","call":"126","operation":"defeq","expr":"γ","core":"γ","other":"γ","other_core":"γ"}
+{"seq":347,"depth":3,"event":"return","phase":"proof","result":"true","call":"126"}
+{"seq":348,"depth":2,"event":"return","phase":"proof","result":"(γ → Prop)","result_core":"(γ → Prop)","call":"102"}
+{"seq":349,"depth":2,"event":"enter","phase":"proof","call":"127","operation":"check","expr":"((g ∘ f) y)","core":"(Function.comp.{1, 1, 1} α β γ g f y)"}
+{"seq":350,"depth":3,"event":"enter","phase":"proof","call":"128","operation":"check","expr":"(g ∘ f)","core":"(Function.comp.{1, 1, 1} α β γ g f)"}
+{"seq":351,"depth":4,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":352,"depth":3,"event":"return","phase":"proof","result":"(α → γ)","result_core":"(α → γ)","call":"128"}
+{"seq":353,"depth":3,"event":"enter","phase":"proof","call":"129","operation":"check","expr":"y","core":"y"}
+{"seq":354,"depth":3,"event":"return","phase":"proof","result":"α","result_core":"α","call":"129"}
+{"seq":355,"depth":3,"event":"argument","phase":"proof","actual":"α","expected":"α"}
+{"seq":356,"depth":3,"event":"enter","phase":"proof","call":"130","operation":"defeq","expr":"α","core":"α","other":"α","other_core":"α"}
+{"seq":357,"depth":3,"event":"return","phase":"proof","result":"true","call":"130"}
+{"seq":358,"depth":2,"event":"return","phase":"proof","result":"γ","result_core":"γ","call":"127"}
+{"seq":359,"depth":2,"event":"argument","phase":"proof","actual":"γ","expected":"γ"}
+{"seq":360,"depth":2,"event":"enter","phase":"proof","call":"131","operation":"defeq","expr":"γ","core":"γ","other":"γ","other_core":"γ"}
+{"seq":361,"depth":2,"event":"return","phase":"proof","result":"true","call":"131"}
+{"seq":362,"depth":1,"event":"return","phase":"proof","result":"Prop","result_core":"Prop","call":"101"}
+{"seq":363,"depth":1,"event":"context","phase":"proof","name":"h0","id":"_kernel_fresh.29","type":"(((g ∘ f) x) = ((g ∘ f) y))","type_core":"(Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x) (Function.comp.{1, 1, 1} α β γ g f y))"}
+{"seq":364,"depth":1,"event":"enter","phase":"proof","call":"132","operation":"check","expr":"(hf x y h0)","core":"(hf x y h0)"}
+{"seq":365,"depth":2,"event":"enter","phase":"proof","call":"133","operation":"check","expr":"(hf x y)","core":"(hf x y)"}
+{"seq":366,"depth":3,"event":"enter","phase":"proof","call":"134","operation":"check","expr":"(hf x)","core":"(hf x)"}
+{"seq":367,"depth":4,"event":"enter","phase":"proof","call":"135","operation":"check","expr":"hf","core":"hf"}
+{"seq":368,"depth":4,"event":"return","phase":"proof","result":"(Function.Injective f)","result_core":"(Function.Injective.{1, 1} α β f)","call":"135"}
+{"seq":369,"depth":4,"event":"enter","phase":"proof","call":"136","operation":"whnf","expr":"(Function.Injective f)","core":"(Function.Injective.{1, 1} α β f)"}
+{"seq":370,"depth":5,"event":"enter","phase":"proof","call":"137","operation":"whnf_core","expr":"(Function.Injective f)","core":"(Function.Injective.{1, 1} α β f)"}
+{"seq":371,"depth":6,"event":"enter","phase":"proof","call":"138","operation":"whnf_core","expr":"Function.Injective","core":"Function.Injective.{1, 1}"}
+{"seq":372,"depth":6,"event":"return","phase":"proof","result":"Function.Injective","result_core":"Function.Injective.{1, 1}","call":"138"}
+{"seq":373,"depth":5,"event":"return","phase":"proof","result":"(Function.Injective f)","result_core":"(Function.Injective.{1, 1} α β f)","call":"137"}
+{"seq":374,"depth":5,"event":"enter","phase":"proof","call":"139","operation":"unfold","expr":"Function.Injective","core":"Function.Injective.{1, 1}"}
+{"seq":375,"depth":5,"event":"return","phase":"proof","result":"(fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂)))))))","result_core":"(fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, ((Eq.{1} β (f a₁) (f a₂)) → (Eq.{1} α a₁ a₂)))))))","call":"139"}
+{"seq":376,"depth":5,"event":"enter","phase":"proof","call":"140","operation":"whnf_core","expr":"((fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))))) α β f)","core":"((fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, ((Eq.{1} β (f a₁) (f a₂)) → (Eq.{1} α a₁ a₂))))))) α β f)"}
+{"seq":377,"depth":6,"event":"enter","phase":"proof","call":"141","operation":"whnf_core","expr":"(fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂)))))))","core":"(fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, ((Eq.{1} β (f a₁) (f a₂)) → (Eq.{1} α a₁ a₂)))))))"}
+{"seq":378,"depth":6,"event":"return","phase":"proof","result":"(fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂)))))))","result_core":"(fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, ((Eq.{1} β (f a₁) (f a₂)) → (Eq.{1} α a₁ a₂)))))))","call":"141"}
+{"seq":379,"depth":6,"event":"enter","phase":"proof","call":"142","operation":"whnf_core","expr":"(∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))","core":"(∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, ((Eq.{1} β (f a₁) (f a₂)) → (Eq.{1} α a₁ a₂))))"}
+{"seq":380,"depth":6,"event":"return","phase":"proof","result":"(∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))","result_core":"(∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, ((Eq.{1} β (f a₁) (f a₂)) → (Eq.{1} α a₁ a₂))))","call":"142"}
+{"seq":381,"depth":5,"event":"return","phase":"proof","result":"(∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))","result_core":"(∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, ((Eq.{1} β (f a₁) (f a₂)) → (Eq.{1} α a₁ a₂))))","call":"140"}
+{"seq":382,"depth":5,"event":"enter","phase":"proof","call":"143","operation":"unfold","expr":"(∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))","core":"(∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, ((Eq.{1} β (f a₁) (f a₂)) → (Eq.{1} α a₁ a₂))))"}
+{"seq":383,"depth":5,"event":"return","phase":"proof","result":"no unfolding","call":"143"}
+{"seq":384,"depth":4,"event":"return","phase":"proof","result":"(∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))","result_core":"(∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, ((Eq.{1} β (f a₁) (f a₂)) → (Eq.{1} α a₁ a₂))))","call":"136"}
+{"seq":385,"depth":4,"event":"enter","phase":"proof","call":"144","operation":"check","expr":"x","core":"x"}
+{"seq":386,"depth":5,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":387,"depth":4,"event":"return","phase":"proof","result":"α","result_core":"α","call":"144"}
+{"seq":388,"depth":4,"event":"argument","phase":"proof","actual":"α","expected":"α"}
+{"seq":389,"depth":4,"event":"enter","phase":"proof","call":"145","operation":"defeq","expr":"α","core":"α","other":"α","other_core":"α"}
+{"seq":390,"depth":4,"event":"return","phase":"proof","result":"true","call":"145"}
+{"seq":391,"depth":3,"event":"return","phase":"proof","result":"(∀ ⦃a₂ : α⦄, (((f x) = (f a₂)) → (x = a₂)))","result_core":"(∀ ⦃a₂ : α⦄, ((Eq.{1} β (f x) (f a₂)) → (Eq.{1} α x a₂)))","call":"134"}
+{"seq":392,"depth":3,"event":"enter","phase":"proof","call":"146","operation":"check","expr":"y","core":"y"}
+{"seq":393,"depth":4,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":394,"depth":3,"event":"return","phase":"proof","result":"α","result_core":"α","call":"146"}
+{"seq":395,"depth":3,"event":"argument","phase":"proof","actual":"α","expected":"α"}
+{"seq":396,"depth":3,"event":"enter","phase":"proof","call":"147","operation":"defeq","expr":"α","core":"α","other":"α","other_core":"α"}
+{"seq":397,"depth":3,"event":"return","phase":"proof","result":"true","call":"147"}
+{"seq":398,"depth":2,"event":"return","phase":"proof","result":"(((f x) = (f y)) → (x = y))","result_core":"((Eq.{1} β (f x) (f y)) → (Eq.{1} α x y))","call":"133"}
+{"seq":399,"depth":2,"event":"enter","phase":"proof","call":"148","operation":"check","expr":"h0","core":"h0"}
+{"seq":400,"depth":2,"event":"return","phase":"proof","result":"(((g ∘ f) x) = ((g ∘ f) y))","result_core":"(Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x) (Function.comp.{1, 1, 1} α β γ g f y))","call":"148"}
+{"seq":401,"depth":2,"event":"argument","phase":"proof","actual":"(((g ∘ f) x) = ((g ∘ f) y))","expected":"((f x) = (f y))"}
+{"seq":402,"depth":2,"event":"enter","phase":"proof","call":"149","operation":"defeq","expr":"(((g ∘ f) x) = ((g ∘ f) y))","core":"(Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x) (Function.comp.{1, 1, 1} α β γ g f y))","other":"((f x) = (f y))","other_core":"(Eq.{1} β (f x) (f y))"}
+{"seq":403,"depth":3,"event":"enter","phase":"proof","call":"150","operation":"whnf_core","expr":"(((g ∘ f) x) = ((g ∘ f) y))","core":"(Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x) (Function.comp.{1, 1, 1} α β γ g f y))"}
+{"seq":404,"depth":4,"event":"enter","phase":"proof","call":"151","operation":"whnf_core","expr":"Eq","core":"Eq.{1}"}
+{"seq":405,"depth":4,"event":"return","phase":"proof","result":"Eq","result_core":"Eq.{1}","call":"151"}
+{"seq":406,"depth":3,"event":"return","phase":"proof","result":"(((g ∘ f) x) = ((g ∘ f) y))","result_core":"(Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x) (Function.comp.{1, 1, 1} α β γ g f y))","call":"150"}
+{"seq":407,"depth":3,"event":"enter","phase":"proof","call":"152","operation":"whnf_core","expr":"((f x) = (f y))","core":"(Eq.{1} β (f x) (f y))"}
+{"seq":408,"depth":4,"event":"enter","phase":"proof","call":"153","operation":"whnf_core","expr":"Eq","core":"Eq.{1}"}
+{"seq":409,"depth":4,"event":"return","phase":"proof","result":"Eq","result_core":"Eq.{1}","call":"153"}
+{"seq":410,"depth":3,"event":"return","phase":"proof","result":"((f x) = (f y))","result_core":"(Eq.{1} β (f x) (f y))","call":"152"}
+{"seq":411,"depth":3,"event":"enter","phase":"proof","call":"154","operation":"infer","expr":"(((g ∘ f) x) = ((g ∘ f) y))","core":"(Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x) (Function.comp.{1, 1, 1} α β γ g f y))"}
+{"seq":412,"depth":4,"event":"enter","phase":"proof","call":"155","operation":"infer","expr":"Eq","core":"Eq.{1}"}
+{"seq":413,"depth":4,"event":"return","phase":"proof","result":"(∀ {α : Type}, (α → (α → Prop)))","result_core":"(∀ {α : Type}, (α → (α → Prop)))","call":"155"}
+{"seq":414,"depth":3,"event":"return","phase":"proof","result":"Prop","result_core":"Prop","call":"154"}
+{"seq":415,"depth":3,"event":"enter","phase":"proof","call":"156","operation":"infer","expr":"Prop","core":"Prop"}
+{"seq":416,"depth":3,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"156"}
+{"seq":417,"depth":3,"event":"enter","phase":"proof","call":"157","operation":"whnf_core","expr":"(((g ∘ f) x) = ((g ∘ f) y))","core":"(Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x) (Function.comp.{1, 1, 1} α β γ g f y))"}
+{"seq":418,"depth":4,"event":"enter","phase":"proof","call":"158","operation":"whnf_core","expr":"Eq","core":"Eq.{1}"}
+{"seq":419,"depth":4,"event":"return","phase":"proof","result":"Eq","result_core":"Eq.{1}","call":"158"}
+{"seq":420,"depth":3,"event":"return","phase":"proof","result":"(((g ∘ f) x) = ((g ∘ f) y))","result_core":"(Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x) (Function.comp.{1, 1, 1} α β γ g f y))","call":"157"}
+{"seq":421,"depth":3,"event":"enter","phase":"proof","call":"159","operation":"whnf_core","expr":"((f x) = (f y))","core":"(Eq.{1} β (f x) (f y))"}
+{"seq":422,"depth":4,"event":"enter","phase":"proof","call":"160","operation":"whnf_core","expr":"Eq","core":"Eq.{1}"}
+{"seq":423,"depth":4,"event":"return","phase":"proof","result":"Eq","result_core":"Eq.{1}","call":"160"}
+{"seq":424,"depth":3,"event":"return","phase":"proof","result":"((f x) = (f y))","result_core":"(Eq.{1} β (f x) (f y))","call":"159"}
+{"seq":425,"depth":3,"event":"enter","phase":"proof","call":"161","operation":"defeq","expr":"Eq","core":"Eq.{1}","other":"Eq","other_core":"Eq.{1}"}
+{"seq":426,"depth":3,"event":"return","phase":"proof","result":"true","call":"161"}
+{"seq":427,"depth":3,"event":"enter","phase":"proof","call":"162","operation":"defeq","expr":"γ","core":"γ","other":"β","other_core":"β"}
+{"seq":428,"depth":4,"event":"enter","phase":"proof","call":"163","operation":"whnf_core","expr":"γ","core":"γ"}
+{"seq":429,"depth":4,"event":"return","phase":"proof","result":"γ","result_core":"γ","call":"163"}
+{"seq":430,"depth":4,"event":"enter","phase":"proof","call":"164","operation":"whnf_core","expr":"β","core":"β"}
+{"seq":431,"depth":4,"event":"return","phase":"proof","result":"β","result_core":"β","call":"164"}
+{"seq":432,"depth":4,"event":"enter","phase":"proof","call":"165","operation":"infer","expr":"γ","core":"γ"}
+{"seq":433,"depth":4,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"165"}
+{"seq":434,"depth":4,"event":"enter","phase":"proof","call":"166","operation":"infer","expr":"Type","core":"Type"}
+{"seq":435,"depth":5,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":436,"depth":4,"event":"return","phase":"proof","result":"Sort 2","result_core":"Sort 2","call":"166"}
+{"seq":437,"depth":4,"event":"enter","phase":"proof","call":"167","operation":"whnf_core","expr":"γ","core":"γ"}
+{"seq":438,"depth":4,"event":"return","phase":"proof","result":"γ","result_core":"γ","call":"167"}
+{"seq":439,"depth":4,"event":"enter","phase":"proof","call":"168","operation":"whnf_core","expr":"β","core":"β"}
+{"seq":440,"depth":4,"event":"return","phase":"proof","result":"β","result_core":"β","call":"168"}
+{"seq":441,"depth":4,"event":"enter","phase":"proof","call":"169","operation":"infer","expr":"γ","core":"γ"}
+{"seq":442,"depth":5,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":443,"depth":4,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"169"}
+{"seq":444,"depth":4,"event":"enter","phase":"proof","call":"170","operation":"whnf","expr":"Type","core":"Type"}
+{"seq":445,"depth":4,"event":"return","phase":"proof","result":"Type","result_core":"Type","call":"170"}
+{"seq":446,"depth":3,"event":"return","phase":"proof","result":"false","call":"162"}
+{"seq":447,"depth":3,"event":"enter","phase":"proof","call":"171","operation":"infer","expr":"(((g ∘ f) x) = ((g ∘ f) y))","core":"(Eq.{1} γ (Function.comp.{1, 1, 1} α β γ g f x) (Function.comp.{1, 1, 1} α β γ g f y))"}
+{"seq":448,"depth":4,"event":"cache","phase":"proof","name":"m_infer_type[infer_only]"}
+{"seq":449,"depth":3,"event":"return","phase":"proof","result":"Prop","result_core":"Prop","call":"171"}
+{"seq":450,"depth":3,"event":"enter","phase":"proof","call":"172","operation":"whnf","expr":"Prop","core":"Prop"}
+{"seq":451,"depth":3,"event":"return","phase":"proof","result":"Prop","result_core":"Prop","call":"172"}
+{"seq":452,"depth":2,"event":"return","phase":"proof","result":"false","call":"149"}
+{"seq":453,"depth":1,"event":"return","phase":"proof","status":"exception","call":"132"}
+{"seq":454,"depth":0,"event":"return","phase":"proof","status":"exception","call":"69"}
+{"seq":455,"depth":0,"event":"end","phase":"proof","status":"exception"}

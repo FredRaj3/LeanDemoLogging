@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/fred/Desktop/Math289/LeanDemoLogging/lean4/build/release/stage1/bin/lean",
+    "-DElab.async=false",
+    "-DstderrAsMessages=false",
+    "tests/BadApplication.lean"
+  ],
+  "source": "tests/BadApplication.lean",
+  "source_text": "import Lean\nopen Lean Meta\n\ntheorem good {\u03b1 \u03b2 \u03b3 : Type} {f : \u03b1 \u2192 \u03b2} {g : \u03b2 \u2192 \u03b3}\n    (hg : Function.Injective g) (hf : Function.Injective f) :\n    Function.Injective (g \u2218 f) :=\n  fun x y h0 => @hf x y (@hg (f x) (f y) h0)\n\n-- Submit a deliberately incorrect core expression directly to the kernel.\n-- This bypasses the elaborator's ordinary rejection of ill-typed source.\nrun_meta do\n  let ci \u2190 getConstInfo ``good\n  let bad \u2190 lambdaTelescope (ci.value! (allowOpaque := true)) fun xs _ =>\n    mkLambdaFVars xs (mkApp3 xs[6]! xs[7]! xs[8]! xs[9]!)\n  try\n    addDecl (.thmDecl {\n      name := `inj_comp_bad\n      levelParams := ci.levelParams\n      type := ci.type\n      value := bad\n    })\n    logInfo \"UNEXPECTED ACCEPTANCE\"\n  catch ex =>\n    logInfo m!\"EXPECTED KERNEL REJECTION:\\n{ex.toMessageData}\"\n",
+  "declaration": "inj_comp_bad",
+  "lean_version": "Lean (version 4.36.0, arm64-apple-darwin25.6.0, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+  "events": 455,
+  "status": "exception"
+}

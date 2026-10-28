@@ -1,0 +1,13 @@
+{
+  "LeanDemo/LeanDemo.lean": "358eae89600274898f877685994f283396786f825fb01e857ec880c9cb8628c3",
+  "LeanDemo/lean-toolchain": "d581a24b57a4ae9e0b2132ca8ac7cc3ac336a9fc2751fe6b29414e2d434d54c4",
+  "LeanDemo/README.md": "f7ef3df46f38848bf0cb128c4d011f95d460f348c47125fcdab504c536d6f486",
+  "LeanDemo/lake-manifest.json": "a61fe91ac7f9b322486106b00d4b65e129891f8e9a1f94d0a032d70007ab4201",
+  "LeanDemo/.gitignore": "b3ad09fc93f83fdbd0bee771258dd4a58d3798fd7e6048611dde5a804bb43f1e",
+  "LeanDemo/lakefile.toml": "88569df53cefdf5ed2fb338e8eb3817cb99e27b7928e2773c2a549908d8d8a26",
+  "LeanDemo/LeanDemo/Basic.lean": "a88fef4d3efa63c9f9f5c948dd5ba1de3ea09d828ce8388ee83fa3d039e734a4",
+  "LeanDemo/LeanDemo/KernelDemo.lean": "cb7b1ba773d05bb1ecc519a3719dce747992bd8d762bbcdffc03164b40e94a13",
+  "LeanDemo/.github/workflows/create-release.yml": "491f1c02bb31774c3f711155a4cc24da5923dc8ba7016e9aaff13969e2ea49ca",
+  "LeanDemo/.github/workflows/update.yml": "608304be502130030682762aa4a9bbec3e127d6b1eb2acf054818b84b6c81a4f",
+  "LeanDemo/.github/workflows/lean_action_ci.yml": "27c305b340e38c4adc482ea8109aa3e36dfd89c8e56eaf90d57aa7368be2b627"
+}

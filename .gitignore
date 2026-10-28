@@ -1,0 +1,5 @@
+.lake/
+.build-tools/
+lean4/
+__pycache__/
+traces/*.log

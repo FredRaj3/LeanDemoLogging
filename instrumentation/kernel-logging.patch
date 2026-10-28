@@ -1,0 +1,208 @@
+diff --git a/src/kernel/environment.cpp b/src/kernel/environment.cpp
+index f5dd8c2..3609542 100644
+--- a/src/kernel/environment.cpp
++++ b/src/kernel/environment.cpp
+@@ -14,6 +14,7 @@ Author: Leonardo de Moura
+ #include "kernel/environment.h"
+ #include "kernel/kernel_exception.h"
+ #include "kernel/type_checker.h"
++#include "kernel/demo_trace.h"
+ #include "kernel/quot.h"
+ 
+ namespace lean {
+@@ -192,17 +193,22 @@ environment environment::add_theorem(declaration const & d, bool check) const {
+     scoped_diagnostics diag(*this, check);
+     theorem_val const & v = d.to_theorem_val();
+     if (check) {
++        demo_trace::declaration_scope tracing(v.get_name());
+         type_checker checker(*this, diag.get());
+         sharecommon_persistent_fn share;
+         expr val(share(v.get_value().raw()));
+         expr type(share(v.get_type().raw()));
++        demo_trace::phase("statement");
+         check_constant_val(*this, v.to_constant_val(), checker);
+         if (!checker.is_prop(type))
+             throw theorem_type_is_not_prop(*this, v.get_name(), type);
+         check_no_metavar_no_fvar(*this, v.get_name(), val);
++        demo_trace::phase("proof");
+         expr val_type = checker.check(val, v.get_lparams());
++        demo_trace::phase("comparison");
+         if (!checker.is_def_eq(val_type, type))
+             throw definition_type_mismatch_exception(*this, d, val_type);
++        tracing.accepted();
+     }
+     return diag.update(add(constant_info(d)));
+ }
+diff --git a/src/kernel/type_checker.cpp b/src/kernel/type_checker.cpp
+index 544c709..bbcfc52 100644
+--- a/src/kernel/type_checker.cpp
++++ b/src/kernel/type_checker.cpp
+@@ -14,6 +14,7 @@ Author: Leonardo de Moura
+ #include "runtime/flet.h"
+ #include "util/lbool.h"
+ #include "kernel/type_checker.h"
++#include "kernel/demo_trace.h"
+ #include "kernel/expr_maps.h"
+ #include "kernel/instantiate.h"
+ #include "kernel/kernel_exception.h"
+@@ -133,6 +134,7 @@ expr type_checker::infer_lambda(expr const & _e, bool infer_only) {
+         }
+         /* Extend the local context only after `d` has been checked, as `infer_pi` does. */
+         expr fvar = m_lctx.mk_local_decl(m_st->m_ngen, binding_name(e), d, binding_info(e));
++        demo_trace::context(m_lctx, fvar);
+         fvars.push_back(fvar);
+         e = binding_body(e);
+     }
+@@ -151,6 +153,7 @@ expr type_checker::infer_pi(expr const & _e, bool infer_only) {
+         expr t1 = ensure_sort_core(infer_type_core(d, infer_only), d);
+         us.push_back(sort_level(t1));
+         expr fvar  = m_lctx.mk_local_decl(m_st->m_ngen, binding_name(e), d, binding_info(e));
++        demo_trace::context(m_lctx, fvar);
+         fvars.push_back(fvar);
+         e = binding_body(e);
+     }
+@@ -175,6 +178,7 @@ expr type_checker::infer_app(expr const & e, bool infer_only) {
+         expr f_type = ensure_pi_core(infer_type_core(app_fn(e), infer_only), e);
+         expr a_type = infer_type_core(app_arg(e), infer_only);
+         expr d_type = binding_domain(f_type);
++        demo_trace::application(m_lctx, a_type, d_type);
+         if (is_eager_reduce(app_arg(e))) {
+             // If argument is of the form `eagerReduce`, set m_eager_reduction mode
+             flet<bool> scope(m_eager_reduce, true);
+@@ -221,6 +225,7 @@ expr type_checker::infer_let(expr const & _e, bool infer_only) {
+         }
+         /* Extend the local context only after `type` and `val` have been checked, as `infer_pi` does. */
+         expr fvar = m_lctx.mk_local_decl(m_st->m_ngen, let_name(e), type, val);
++        demo_trace::context(m_lctx, fvar);
+         fvars.push_back(fvar);
+         e = let_body(e);
+     }
+@@ -323,6 +328,8 @@ expr type_checker::infer_lit(expr const & e) {
+ /** \brief Return type of expression \c e, if \c infer_only is false, then it also check whether \c e is type correct or not.
+     \pre closed(e) */
+ expr type_checker::infer_type_core(expr const & e, bool infer_only) {
++    demo_trace::call trace(infer_only ? "infer" : "check", m_lctx, e);
++    return trace.finish([&]() -> expr {
+     if (has_loose_bvars(e))
+         throw kernel_exception(env(), "type checker does not support loose bound variables, replace them with free variables before invoking it");
+ 
+@@ -330,8 +337,10 @@ expr type_checker::infer_type_core(expr const & e, bool infer_only) {
+     check_system("type checker", /* do_check_interrupted */ true);
+ 
+     auto it = m_st->m_infer_type[infer_only].find(e);
+-    if (it != m_st->m_infer_type[infer_only].end())
++    if (it != m_st->m_infer_type[infer_only].end()) {
++        demo_trace::emit("cache", {{"name", "m_infer_type[infer_only]"}});
+         return it->second;
++    }
+ 
+     expr r;
+     switch (e.kind()) {
+@@ -355,6 +364,7 @@ expr type_checker::infer_type_core(expr const & e, bool infer_only) {
+ 
+     m_st->m_infer_type[infer_only].insert(mk_pair(e, r));
+     return r;
++    }());
+ }
+ 
+ expr type_checker::infer_type(expr const & e) {
+@@ -462,6 +472,8 @@ static bool is_let_fvar(local_ctx const & lctx, expr const & e) {
+     If `cheap == true`, then we don't perform delta-reduction when reducing major premise of recursors and projections.
+     We also do not cache results. */
+ expr type_checker::whnf_core(expr const & e, bool cheap_rec, bool cheap_proj) {
++    demo_trace::call trace("whnf_core", m_lctx, e);
++    return trace.finish([&]() -> expr {
+     scope_rec_depth guard;
+     check_system("type checker: whnf", /* do_check_interrupted */ true);
+ 
+@@ -485,8 +497,10 @@ expr type_checker::whnf_core(expr const & e, bool cheap_rec, bool cheap_proj) {
+ 
+     // check cache
+     auto it = m_st->m_whnf_core.find(e);
+-    if (it != m_st->m_whnf_core.end())
++    if (it != m_st->m_whnf_core.end()) {
++        demo_trace::emit("cache", {{"name", "m_whnf_core"}});
+         return it->second;
++    }
+ 
+     // do the actual work
+     expr r;
+@@ -544,6 +558,7 @@ expr type_checker::whnf_core(expr const & e, bool cheap_rec, bool cheap_proj) {
+         m_st->m_whnf_core.insert(mk_pair(e, r));
+     }
+     return r;
++    }());
+ }
+ 
+ /** \brief Return some definition \c d iff \c e is a target for delta-reduction, and the given definition is the one
+@@ -559,6 +574,8 @@ optional<constant_info> type_checker::is_delta(expr const & e) const {
+ }
+ 
+ optional<expr> type_checker::unfold_definition_core(expr const & e) {
++    demo_trace::call trace("unfold", m_lctx, e);
++    return trace.finish([&]() -> optional<expr> {
+     if (is_constant(e)) {
+         if (auto d = is_delta(e)) {
+             levels const & us = const_levels(e);
+@@ -579,6 +596,7 @@ optional<expr> type_checker::unfold_definition_core(expr const & e) {
+         }
+     }
+     return none_expr();
++    }());
+ }
+ 
+ /* Unfold head(e) if it is a constant */
+@@ -700,6 +718,8 @@ optional<expr> type_checker::reduce_nat(expr const & e) {
+ 
+ /** \brief Put expression \c t in weak head normal form */
+ expr type_checker::whnf(expr const & e) {
++    demo_trace::call trace("whnf", m_lctx, e);
++    return trace.finish([&]() -> expr {
+     // Do not cache easy cases
+     switch (e.kind()) {
+     case expr_kind::BVar:  case expr_kind::Sort: case expr_kind::MVar: case expr_kind::Pi:
+@@ -719,8 +739,10 @@ expr type_checker::whnf(expr const & e) {
+ 
+     // check cache
+     auto it = m_st->m_whnf.find(e);
+-    if (it != m_st->m_whnf.end())
++    if (it != m_st->m_whnf.end()) {
++        demo_trace::emit("cache", {{"name", "m_whnf"}});
+         return it->second;
++    }
+ 
+     expr t = e;
+     while (true) {
+@@ -736,6 +758,7 @@ expr type_checker::whnf(expr const & e) {
+             return r;
+         }
+     }
++    }());
+ }
+ 
+ /** \brief Given lambda/Pi expressions \c t and \c s, return true iff \c t is def eq to \c s.
+@@ -764,6 +787,7 @@ bool type_checker::is_def_eq_binding(expr t, expr s) {
+             if (!var_s_type)
+                 var_s_type = instantiate_rev(binding_domain(s), subst.size(), subst.data());
+             subst.push_back(m_lctx.mk_local_decl(m_st->m_ngen, binding_name(s), *var_s_type, binding_info(s)));
++            demo_trace::context(m_lctx, subst.back());
+         } else {
+             subst.push_back(*g_dont_care); // don't care
+         }
+@@ -1126,6 +1150,8 @@ bool type_checker::is_def_eq_unit_like(expr const & t, expr const & s) {
+ }
+ 
+ bool type_checker::is_def_eq_core(expr const & t, expr const & s) {
++    demo_trace::call trace("defeq", m_lctx, t, &s);
++    return trace.finish([&]() -> bool {
+     scope_rec_depth guard;
+     check_system("is_definitionally_equal", /* do_check_interrupted */ true);
+     lbool r = quick_is_def_eq(t, s);
+@@ -1200,6 +1226,7 @@ bool type_checker::is_def_eq_core(expr const & t, expr const & s) {
+         return true;
+ 
+     return false;
++    }());
+ }
+ 
+ bool type_checker::is_def_eq(expr const & t, expr const & s) {

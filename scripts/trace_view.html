@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kernel trace · $title</title>
+<style>
+:root{font:14px system-ui,sans-serif;color:#233247;background:#f4f6f9;--phase:#64748b;--tint:#edf0f4}
+*{box-sizing:border-box}body{margin:0;padding:24px}h1{font-size:25px;margin:0 0 8px}h2{font-size:17px;margin:0}h3{font-size:14px;margin:0 0 8px}p{line-height:1.5;margin:8px 0}
+[data-phase="statement"]{--phase:#956600;--tint:#fff6df}[data-phase="proof"]{--phase:#2169a8;--tint:#eaf3fc}[data-phase="comparison"]{--phase:#8054a4;--tint:#f4edfb}
+button{font:inherit;color:inherit;background:white;border:1px solid #bbc6d5;border-radius:6px;padding:6px 10px;cursor:pointer}button:hover{background:#eef2f7}button:disabled{cursor:default;opacity:.45}
+button:focus-visible,.event:focus-visible,summary:focus-visible{outline:2px solid #2169a8;outline-offset:2px}
+.intro,.muted{color:#52647b}.intro{max-width:1050px}.status{font-weight:600}.counts{font-size:12px;color:#61738b}.legend{display:flex;gap:18px;flex-wrap:wrap;margin:14px 0}.legend span{border-left:4px solid var(--phase);padding-left:8px}
+.layout{display:grid;grid-template-columns:minmax(330px,38%) minmax(0,1fr);gap:20px;align-items:start;margin-top:18px}
+.reference{position:sticky;top:16px;max-height:calc(100vh - 32px);display:flex;flex-direction:column;background:white;border:1px solid #d6deea;border-radius:10px;overflow:hidden}
+.reference-header{padding:16px 16px 10px}.tabs{display:flex;gap:6px;margin-top:12px}.tabs button[aria-selected="true"]{background:#233e60;color:white;border-color:#233e60}
+.reference-content{overflow:auto;padding:0 16px 16px;min-height:100px}.reference pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0;line-height:1.65;font:12px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace}
+.reference details{margin:12px 0}summary{cursor:pointer;font-weight:600;padding:6px 0}.statement-code{max-height:240px;overflow:auto}
+.selection{border-left:4px solid var(--phase);background:var(--tint);padding:10px 12px;margin:12px 0 0}.selection pre{max-height:155px;overflow:auto;background:#fff4c4;padding:8px;margin:6px 0}.selection .muted{font-size:12px}.selection:has(pre[hidden]){background:#f7f9fc}
+mark{background:#ffe59c;color:#202d3e;border-radius:2px}.source-line{display:block;min-height:1.65em}.line-number{display:inline-block;min-width:4ch;margin-right:12px;color:#7d899b;user-select:none}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px;border:1px solid #d6deea;border-radius:8px;background:#f4f6f9;margin:10px 0}.toolbar label{font-size:12px}.toolbar input{vertical-align:middle}
+.event{border:1px solid #dce3ed;border-left:4px solid var(--phase);border-radius:5px;background:white;margin:5px 0 5px calc(var(--depth)*10px);padding:9px 11px;scroll-margin-top:16px;cursor:pointer}
+.event:hover{background:#f9fbfe}.event.in-call{background:var(--tint)}.event.selected{outline:2px solid var(--phase);outline-offset:1px}.event.selected .event-head{background:#ffe59c;border-radius:3px}
+.event[data-kind="phase"]{margin-top:22px;background:var(--tint)}.event-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11px;min-height:22px}.sequence{color:#53647b;font-variant-numeric:tabular-nums}.call-id{color:#52647b}.phase-label{margin-left:auto;color:var(--phase);font-size:10px}
+.event-body{font-size:13px;line-height:1.65;overflow-wrap:anywhere;margin-top:4px}.term{font:12px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap}.operator{padding:0 4px;color:#53647b}.fold{width:25px;height:23px;padding:0;font-size:17px;line-height:1}.fold-note{display:block;font-size:12px;color:#52647b;margin-top:7px}
+.footnote{font-size:12px;line-height:1.6;margin-top:18px;color:#52647b}[hidden]{display:none!important}
+@media(min-width:1700px){body{max-width:1800px;margin:auto}}@media(max-width:850px){body{padding:12px}.layout{grid-template-columns:1fr}.reference{position:static;max-height:65vh}.event{margin-left:calc(var(--depth)*5px)}}
+</style>
+</head>
+<body>
+<h1>Actual kernel trace · $title</h1>
+<p class="intro">Read the recorded events from top to bottom. Each return appears after the work that produced it.
+Select a call to highlight its events and inspect its expression beside the proof.</p>
+<p><span class="status">Declaration: $status</span> · $total recorded events</p>
+<p class="counts">$counts calls</p>
+<div class="legend" aria-label="Phase colors"><span data-phase="statement">Statement checking</span><span data-phase="proof">Proof checking</span><span data-phase="comparison">Final type comparison</span></div>
+<div class="layout">
+<aside class="reference" aria-label="Proof reference">
+  <div class="reference-header">
+    <h2>Proof reference</h2>
+    <div class="selection" id="selection" data-phase="proof" aria-live="polite">
+      <h3 id="selection-title">Select an event</h3>
+      <p class="muted" id="selection-info">A call and its nested events will share a highlight.</p>
+      <pre id="selection-code" hidden></pre>
+      <p class="muted" id="match-info"></p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Proof view">
+      <button id="elaborated-tab" role="tab" aria-selected="true" aria-controls="elaborated-panel">Elaborated proof</button>
+      <button id="source-tab" role="tab" aria-selected="false" aria-controls="source-panel">Original source</button>
+    </div>
+  </div>
+  <div class="reference-content" id="reference-content">
+    <section id="elaborated-panel" role="tabpanel" aria-labelledby="elaborated-tab">
+      <details id="statement-block"><summary>Declared theorem statement</summary><pre id="statement-code" class="statement-code"></pre></details>
+      <h3>Proof supplied to the kernel</h3>
+      <pre id="proof-code"></pre>
+      <p class="footnote">Expressions come from the recorded top-level checks. Line breaks are for readability.
+      Highlights show unique text matches in these expressions; they are not source locations.</p>
+    </section>
+    <section id="source-panel" role="tabpanel" aria-labelledby="source-tab" hidden>
+      <p id="source-name" class="muted"></p><p id="source-note" class="footnote"></p><pre id="source-code"></pre>
+    </section>
+  </div>
+</aside>
+<main aria-label="Chronological kernel events">
+  <h2>Execution order</h2>
+  <div class="toolbar"><button id="expand">Expand all calls</button><button id="collapse">Collapse all calls</button>
+  <label><input type="checkbox" id="core"> All arguments and universes</label>
+  <span id="visible-count" class="counts">$total / $total events visible</span></div>
+  <div id="events">$rows</div>
+  <p class="footnote">CHECK validates an expression and returns its type. INFER follows the inference-only path.
+  WHNF / WHNF_CORE reduce expressions; UNFOLD attempts to expand a definition; DEFEQ compares expressions for definitional equality.
+  This view includes every recorded event. Internal actions without separate logging are not individual rows.</p>
+</main>
+</div>
+<script type="application/json" id="trace-data">$data</script>
+<script>
+'use strict';
+const data = JSON.parse(document.getElementById('trace-data').textContent);
+const events = data.events;
+const rows = Array.from(document.querySelectorAll('.event'));
+const calls = new Map(), owners = new Map(), stack = [];
+for (const event of events) {
+  if (event.event === 'enter') { calls.set(event.call, {entry:event}); stack.push(event.call); }
+  owners.set(event.seq, stack.length ? stack[stack.length - 1] : null);
+  if (event.event === 'return') { calls.get(event.call).exit = event; stack.pop(); }
+}
+const collapsed = new Set();
+const root = phase => events.find(e => e.event === 'enter' && e.operation === 'check' && e.phase === phase && e.depth === 0);
+const statement = root('statement'), proof = root('proof');
+const core = document.getElementById('core');
+const selectedCode = document.getElementById('selection-code');
+let selected = null;
+const expression = (event, key='expr') => event ? (core.checked && event[key === 'expr' ? 'core' : key + '_core']) || event[key] || '' : '';
+
+// Whitespace only: do not unfold expressions or change text inside string literals.
+function formatExpression(text) {
+  let out = '', quoted = false, escaped = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (!quoted && text.startsWith(' => ', i)) { out += ' =>\n  '; i += 3; continue; }
+    if (!quoted && text.startsWith(', (∀', i)) { out += ',\n  '; i++; continue; }
+    if (!quoted && ch === ';') { out += ';\n  '; if (text[i+1] === ' ') i++; continue; }
+    out += ch;
+    if (escaped) escaped = false;
+    else if (quoted && ch === '\\') escaped = true;
+    else if (ch === '"') quoted = !quoted;
+  }
+  return out;
+}
+
+function uniqueMatch(text, needle) {
+  if (!needle) return -1;
+  const identifier = /[\p{L}\p{N}_'.]/u;
+  let found = -1, quoted = false, escaped = false;
+  for (let i = 0; i < text.length; i++) {
+    if (!quoted && text.startsWith(needle, i) &&
+        !(identifier.test(needle[0]) && i > 0 && identifier.test(text[i-1])) &&
+        !(identifier.test(needle[needle.length-1]) && i + needle.length < text.length && identifier.test(text[i+needle.length]))) {
+      if (found !== -1) return -1;
+      found = i;
+    }
+    if (escaped) escaped = false;
+    else if (quoted && text[i] === '\\') escaped = true;
+    else if (text[i] === '"') quoted = !quoted;
+  }
+  return found;
+}
+
+function showExpression(element, text, needle) {
+  const at = uniqueMatch(text, needle);
+  element.replaceChildren();
+  if (at < 0) element.textContent = formatExpression(text);
+  else {
+    const mark = document.createElement('mark');
+    mark.textContent = formatExpression(needle);
+    element.append(document.createTextNode(formatExpression(text.slice(0, at))), mark,
+      document.createTextNode(formatExpression(text.slice(at + needle.length))));
+  }
+  return at >= 0;
+}
+
+function refreshReference() {
+  const call = selected && calls.get(owners.get(selected.seq));
+  const entry = call && call.entry;
+  const needle = expression(entry);
+  const target = entry && entry.phase === 'statement' ? 'statement' : 'proof';
+  const statementMatch = showExpression(document.getElementById('statement-code'), expression(statement) || 'No statement check recorded.', target === 'statement' ? needle : '');
+  const proofMatch = showExpression(document.getElementById('proof-code'), expression(proof) || 'No proof check recorded.', target === 'proof' ? needle : '');
+  selectedCode.hidden = !entry;
+  if (entry) {
+    selectedCode.textContent = formatExpression(needle) + (entry.other ? '\n=?=\n' + formatExpression(expression(entry, 'other')) : '');
+    document.getElementById('match-info').textContent = (statementMatch || proofMatch)
+      ? 'Matching text highlighted in the elaborated ' + target + '.'
+      : 'No unique text match in the elaborated ' + target + '; the call expression is shown above.';
+    if (statementMatch) document.getElementById('statement-block').open = true;
+  } else document.getElementById('match-info').textContent = '';
+}
+
+function selectEvent(seq) {
+  selected = events.find(e => e.seq === seq);
+  const call = calls.get(owners.get(seq));
+  for (const row of rows) {
+    const number = Number(row.dataset.seq);
+    row.classList.toggle('selected', number === seq);
+    row.classList.toggle('in-call', !!call && number >= call.entry.seq && number <= call.exit.seq);
+  }
+  document.getElementById('selection').dataset.phase = selected.phase;
+  document.getElementById('selection-title').textContent = call
+    ? call.entry.operation.toUpperCase() + ' · call ' + call.entry.call : selected.event.toUpperCase();
+  document.getElementById('selection-info').textContent = 'Selected event #' + seq + (call
+    ? ' · call spans #' + call.entry.seq + '–#' + call.exit.seq : ' · outside a recorded call');
+  refreshReference();
+}
+
+function refreshVisibility() {
+  let until = 0, visible = 0;
+  for (let i = 0; i < events.length; i++) {
+    const event = events[i], row = rows[i];
+    row.hidden = event.seq < until;
+    if (!row.hidden) visible++;
+    if (event.event !== 'enter') continue;
+    const call = calls.get(event.call), folded = collapsed.has(event.call);
+    const count = call.exit.seq - event.seq - 1;
+    const button = row.querySelector('.fold'), note = row.querySelector('.fold-note');
+    button.disabled = count === 0;
+    button.textContent = folded ? '+' : '−';
+    button.setAttribute('aria-expanded', String(!folded));
+    button.setAttribute('aria-label', (folded ? 'Expand' : 'Collapse') + ' nested events of call ' + event.call);
+    note.hidden = !folded || !count;
+    note.textContent = count + ' events hidden (#' + (event.seq+1) + '–#' + (call.exit.seq-1) + '). Return remains below.';
+    if (folded && !row.hidden) until = call.exit.seq;
+  }
+  document.getElementById('visible-count').textContent = visible + ' / ' + events.length + ' events visible';
+}
+
+document.getElementById('events').addEventListener('click', event => {
+  const row = event.target.closest('.event');
+  if (!row) return;
+  const button = event.target.closest('.fold');
+  if (button) {
+    const id = button.dataset.call;
+    if (collapsed.has(id)) collapsed.delete(id); else collapsed.add(id);
+    refreshVisibility();
+  } else selectEvent(Number(row.dataset.seq));
+});
+document.getElementById('events').addEventListener('keydown', event => {
+  if (event.target.classList.contains('event') && (event.key === 'Enter' || event.key === ' ')) {
+    event.preventDefault(); selectEvent(Number(event.target.dataset.seq));
+  }
+});
+document.getElementById('expand').onclick = () => { collapsed.clear(); refreshVisibility(); };
+document.getElementById('collapse').onclick = () => { for (const id of calls.keys()) collapsed.add(id); refreshVisibility(); };
+core.onchange = () => {
+  document.querySelectorAll('.term').forEach(t => t.textContent = core.checked ? t.dataset.core : t.dataset.pretty);
+  refreshReference();
+};
+
+const sourceCode = document.getElementById('source-code');
+let sourceAnchor = null;
+if (data.source) {
+  document.getElementById('source-name').textContent = data.source.name;
+  document.getElementById('source-note').textContent = data.source.captured
+    ? 'Full source file captured when this trace was recorded.'
+    : 'This older recording has no source snapshot. Showing the current source file.';
+  const candidates = [];
+  data.source.text.split('\n').forEach((line, index) => {
+    const span = document.createElement('span'), number = document.createElement('span');
+    span.className = 'source-line'; number.className = 'line-number'; number.textContent = index + 1;
+    span.append(number, document.createTextNode(line)); sourceCode.append(span);
+    const match = line.match(/\b(?:theorem|lemma)\s+([^\s(:{]+)/u);
+    if (match && (match[1] === events[0].declaration || match[1] === events[0].declaration.split('.').pop())) candidates.push(span);
+  });
+  if (candidates.length === 1) sourceAnchor = candidates[0];
+} else document.getElementById('source-note').textContent = 'No source file is available for this recording.';
+for (const name of ['elaborated', 'source']) document.getElementById(name + '-tab').onclick = () => {
+  for (const other of ['elaborated', 'source']) {
+    document.getElementById(other + '-tab').setAttribute('aria-selected', String(other === name));
+    document.getElementById(other + '-panel').hidden = other !== name;
+  }
+  if (name === 'source' && sourceAnchor) {
+    const pane = document.getElementById('reference-content');
+    pane.scrollTop += sourceAnchor.getBoundingClientRect().top - pane.getBoundingClientRect().top;
+  }
+};
+refreshReference();
+refreshVisibility();
+</script>
+</body>
+</html>
