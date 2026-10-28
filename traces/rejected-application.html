@@ -35,7 +35,7 @@ mark{background:#ffe59c;color:#202d3e;border-radius:2px}.source-line{display:blo
 Select a call to highlight its events and inspect its expression beside the proof.</p>
 <p><span class="status">Declaration: exception</span> · 455 recorded events</p>
 <p class="counts">93 check, 34 defeq, 23 infer, 3 whnf, 17 whnf_core, 2 unfold calls</p>
-<div class="legend" aria-label="Phase colors"><button type="button" class="phase-toggle" data-phase="statement" aria-expanded="false" aria-controls="statement-help">Statement checking</button><button type="button" class="phase-toggle" data-phase="proof" aria-expanded="false" aria-controls="proof-help">Proof checking</button><span data-phase="comparison">Final type comparison</span></div>
+<div class="legend" aria-label="Phase colors"><button type="button" class="phase-toggle" data-phase="statement" aria-expanded="false" aria-controls="statement-help">Statement checking</button><button type="button" class="phase-toggle" data-phase="proof" aria-expanded="false" aria-controls="proof-help">Proof checking</button><button type="button" class="phase-toggle" data-phase="comparison" aria-expanded="false" aria-controls="comparison-help">Final type comparison</button></div>
 <div class="phase-help" id="statement-help" data-phase="statement" hidden>
 <p><b>Purpose:</b> confirm the statement is a valid proposition before the proof is checked against it. Every theorem goes through this step.</p>
 <ol>
@@ -57,6 +57,13 @@ Select a call to highlight its events and inspect its expression beside the proo
 <li>Constant or variable: its declared type.</li>
 </ul>
 <p class="muted">The italic label on a call names the rule step that made it. To make two types match, DEFEQ may unfold definitions (UNFOLD) and simplify terms (WHNF). If any step fails, the kernel rejects the proof.</p>
+</div>
+<div class="phase-help" id="comparison-help" data-phase="comparison" hidden>
+<p><b>Purpose:</b> confirm the proof proves the statement. One DEFEQ compares the proof's type, found in proof checking, with the statement.</p>
+<ul>
+<li>They do not have to be written the same way. They must be equal after unfolding definitions and simplifying.</li>
+<li>If they match, the theorem is accepted and added to the environment. If not, the kernel rejects it.</li>
+</ul>
 </div>
 <div class="layout">
 <aside class="reference" aria-label="Proof reference">
