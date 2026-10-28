@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the copied demo through the instrumented native kernel."""
+"""Record the instrumented native kernel while it checks one theorem in a Lean file."""
 import argparse
 import json
 import os
@@ -9,10 +9,11 @@ from render_trace import read_events, render
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
-parser.add_argument('--declaration', default='inj_comp')
-parser.add_argument('--file', default='LeanDemoLogging/KernelDemo.lean')
-parser.add_argument('--output', default='traces/inj_comp.jsonl')
+parser.add_argument('--declaration', required=True, help='full name of the theorem to trace')
+parser.add_argument('--file', required=True, help='Lean file that declares it, relative to this project')
+parser.add_argument('--output', help='event file; default traces/<declaration>.jsonl')
 args = parser.parse_args()
+args.output = args.output or f'traces/{args.declaration}.jsonl'
 lean = ROOT / 'lean4/build/release/stage1/bin/lean'
 if not lean.is_file():
     raise SystemExit('Build the instrumented Lean first: python3 scripts/build.py')

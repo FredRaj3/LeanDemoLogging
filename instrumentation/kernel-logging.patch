@@ -1,5 +1,5 @@
 diff --git a/src/kernel/environment.cpp b/src/kernel/environment.cpp
-index f5dd8c2..3609542 100644
+index f5dd8c2..2f6b59d 100644
 --- a/src/kernel/environment.cpp
 +++ b/src/kernel/environment.cpp
 @@ -14,6 +14,7 @@ Author: Leonardo de Moura
@@ -10,31 +10,43 @@ index f5dd8c2..3609542 100644
  #include "kernel/quot.h"
  
  namespace lean {
+@@ -127,7 +128,7 @@ static void check_constant_val(environment const & env, constant_val const & v,
+     check_name(env, v.get_name());
+     check_duplicated_univ_params(env, v.get_lparams());
+     check_no_metavar_no_fvar(env, v.get_name(), v.get_type());
+-    expr sort = checker.check(v.get_type(), v.get_lparams());
++    expr sort = (demo_trace::purpose("check the statement"), checker.check(v.get_type(), v.get_lparams()));
+     checker.ensure_sort(sort, v.get_type());
+ }
+ 
 @@ -192,17 +193,22 @@ environment environment::add_theorem(declaration const & d, bool check) const {
      scoped_diagnostics diag(*this, check);
      theorem_val const & v = d.to_theorem_val();
      if (check) {
-+        demo_trace::declaration_scope tracing(v.get_name());
++        demo_trace::declaration_scope tracing(*this, v.get_name());
          type_checker checker(*this, diag.get());
          sharecommon_persistent_fn share;
          expr val(share(v.get_value().raw()));
          expr type(share(v.get_type().raw()));
 +        demo_trace::phase("statement");
          check_constant_val(*this, v.to_constant_val(), checker);
-         if (!checker.is_prop(type))
+-        if (!checker.is_prop(type))
++        if (!(demo_trace::purpose("statement's type must be Prop"), checker.is_prop(type)))
              throw theorem_type_is_not_prop(*this, v.get_name(), type);
          check_no_metavar_no_fvar(*this, v.get_name(), val);
+-        expr val_type = checker.check(val, v.get_lparams());
+-        if (!checker.is_def_eq(val_type, type))
 +        demo_trace::phase("proof");
-         expr val_type = checker.check(val, v.get_lparams());
++        expr val_type = (demo_trace::purpose("check the proof"), checker.check(val, v.get_lparams()));
 +        demo_trace::phase("comparison");
-         if (!checker.is_def_eq(val_type, type))
++        if (!(demo_trace::purpose("proof's type matches the statement"), checker.is_def_eq(val_type, type)))
              throw definition_type_mismatch_exception(*this, d, val_type);
 +        tracing.accepted();
      }
      return diag.update(add(constant_info(d)));
  }
 diff --git a/src/kernel/type_checker.cpp b/src/kernel/type_checker.cpp
-index 544c709..bbcfc52 100644
+index 544c709..8164048 100644
 --- a/src/kernel/type_checker.cpp
 +++ b/src/kernel/type_checker.cpp
 @@ -14,6 +14,7 @@ Author: Leonardo de Moura
@@ -45,7 +57,30 @@ index 544c709..bbcfc52 100644
  #include "kernel/expr_maps.h"
  #include "kernel/instantiate.h"
  #include "kernel/kernel_exception.h"
-@@ -133,6 +134,7 @@ expr type_checker::infer_lambda(expr const & _e, bool infer_only) {
+@@ -62,7 +63,7 @@ type_checker::state::state(environment const & env):
+ expr type_checker::ensure_sort_core(expr e, expr const & s) {
+     if (is_sort(e))
+         return e;
+-    auto new_e = whnf(e);
++    auto new_e = (demo_trace::purpose("reduce to expose a sort"), whnf(e));
+     if (is_sort(new_e)) {
+         return new_e;
+     } else {
+@@ -74,7 +75,7 @@ expr type_checker::ensure_sort_core(expr e, expr const & s) {
+ expr type_checker::ensure_pi_core(expr e, expr const & s) {
+     if (is_pi(e))
+         return e;
+-    auto new_e = whnf(e);
++    auto new_e = (demo_trace::purpose("reduce to expose a function type"), whnf(e));
+     if (is_pi(new_e)) {
+         return new_e;
+     } else {
+@@ -129,14 +130,15 @@ expr type_checker::infer_lambda(expr const & _e, bool infer_only) {
+     while (is_lambda(e)) {
+         expr d    = instantiate_rev(binding_domain(e), fvars.size(), fvars.data());
+         if (!infer_only) {
+-            ensure_sort_core(infer_type_core(d, infer_only), d);
++            ensure_sort_core((demo_trace::purpose("binder type must be a type"), infer_type_core(d, infer_only)), d);
          }
          /* Extend the local context only after `d` has been checked, as `infer_pi` does. */
          expr fvar = m_lctx.mk_local_decl(m_st->m_ngen, binding_name(e), d, binding_info(e));
@@ -53,23 +88,71 @@ index 544c709..bbcfc52 100644
          fvars.push_back(fvar);
          e = binding_body(e);
      }
-@@ -151,6 +153,7 @@ expr type_checker::infer_pi(expr const & _e, bool infer_only) {
-         expr t1 = ensure_sort_core(infer_type_core(d, infer_only), d);
+-    expr r = infer_type_core(instantiate_rev(e, fvars.size(), fvars.data()), infer_only);
++    expr r = (demo_trace::purpose("type of the body"), infer_type_core(instantiate_rev(e, fvars.size(), fvars.data()), infer_only));
+     r = cheap_beta_reduce(r);
+     return m_lctx.mk_pi(fvars, r);
+ }
+@@ -148,14 +150,15 @@ expr type_checker::infer_pi(expr const & _e, bool infer_only) {
+     expr e = _e;
+     while (is_pi(e)) {
+         expr d  = instantiate_rev(binding_domain(e), fvars.size(), fvars.data());
+-        expr t1 = ensure_sort_core(infer_type_core(d, infer_only), d);
++        expr t1 = ensure_sort_core((demo_trace::purpose("binder type must be a type"), infer_type_core(d, infer_only)), d);
          us.push_back(sort_level(t1));
          expr fvar  = m_lctx.mk_local_decl(m_st->m_ngen, binding_name(e), d, binding_info(e));
 +        demo_trace::context(m_lctx, fvar);
          fvars.push_back(fvar);
          e = binding_body(e);
      }
-@@ -175,6 +178,7 @@ expr type_checker::infer_app(expr const & e, bool infer_only) {
-         expr f_type = ensure_pi_core(infer_type_core(app_fn(e), infer_only), e);
-         expr a_type = infer_type_core(app_arg(e), infer_only);
+     e = instantiate_rev(e, fvars.size(), fvars.data());
+-    expr s  = ensure_sort_core(infer_type_core(e, infer_only), e);
++    expr s  = ensure_sort_core((demo_trace::purpose("body must be a type"), infer_type_core(e, infer_only)), e);
+     level r = sort_level(s);
+     unsigned i = fvars.size();
+     while (i > 0) {
+@@ -172,23 +175,24 @@ static bool is_eager_reduce(expr const & e) {
+ 
+ expr type_checker::infer_app(expr const & e, bool infer_only) {
+     if (!infer_only) {
+-        expr f_type = ensure_pi_core(infer_type_core(app_fn(e), infer_only), e);
+-        expr a_type = infer_type_core(app_arg(e), infer_only);
++        expr f_type = ensure_pi_core((demo_trace::purpose("type of the function"), infer_type_core(app_fn(e), infer_only)), e);
++        expr a_type = (demo_trace::purpose("type of the argument"), infer_type_core(app_arg(e), infer_only));
          expr d_type = binding_domain(f_type);
 +        demo_trace::application(m_lctx, a_type, d_type);
          if (is_eager_reduce(app_arg(e))) {
              // If argument is of the form `eagerReduce`, set m_eager_reduction mode
              flet<bool> scope(m_eager_reduce, true);
-@@ -221,6 +225,7 @@ expr type_checker::infer_let(expr const & _e, bool infer_only) {
+-            if (!is_def_eq(a_type, d_type)) {
++            if (!(demo_trace::purpose("argument has the expected type"), is_def_eq(a_type, d_type))) {
+                 throw app_type_mismatch_exception(env(), m_lctx, e, f_type, a_type);
+             }
+-        } else if (!is_def_eq(a_type, d_type)) {
++        } else if (!(demo_trace::purpose("argument has the expected type"), is_def_eq(a_type, d_type))) {
+             throw app_type_mismatch_exception(env(), m_lctx, e, f_type, a_type);
+         }
+         return instantiate(binding_body(f_type), app_arg(e));
+     } else {
+         buffer<expr> args;
+         expr const & f = get_app_args(e, args);
+-        expr f_type    = infer_type_core(f, true);
++        expr f_type    = (demo_trace::purpose("type of the function"), infer_type_core(f, true));
+         unsigned j        = 0;
+         unsigned nargs    = args.size();
+         for (unsigned i = 0; i < nargs; i++) {
+@@ -213,18 +217,19 @@ expr type_checker::infer_let(expr const & _e, bool infer_only) {
+         expr type = instantiate_rev(let_type(e), fvars.size(), fvars.data());
+         expr val  = instantiate_rev(let_value(e), fvars.size(), fvars.data());
+         if (!infer_only) {
+-            ensure_sort_core(infer_type_core(type, infer_only), type);
+-            expr val_type = infer_type_core(val, infer_only);
+-            if (!is_def_eq(val_type, type)) {
++            ensure_sort_core((demo_trace::purpose("declared type must be a type"), infer_type_core(type, infer_only)), type);
++            expr val_type = (demo_trace::purpose("type of the value"), infer_type_core(val, infer_only));
++            if (!(demo_trace::purpose("value has the declared type"), is_def_eq(val_type, type))) {
+                 throw def_type_mismatch_exception(env(), m_lctx, let_name(e), val_type, type);
+             }
          }
          /* Extend the local context only after `type` and `val` have been checked, as `infer_pi` does. */
          expr fvar = m_lctx.mk_local_decl(m_st->m_ngen, let_name(e), type, val);
@@ -77,6 +160,11 @@ index 544c709..bbcfc52 100644
          fvars.push_back(fvar);
          e = let_body(e);
      }
+-    expr r = infer_type_core(instantiate_rev(e, fvars.size(), fvars.data()), infer_only);
++    expr r = (demo_trace::purpose("type of the body"), infer_type_core(instantiate_rev(e, fvars.size(), fvars.data()), infer_only));
+     r = cheap_beta_reduce(r); // use `cheap_beta_reduce` (to try) to reduce number of dependencies
+     return m_lctx.mk_pi(fvars, r, true);
+ }
 @@ -323,6 +328,8 @@ expr type_checker::infer_lit(expr const & e) {
  /** \brief Return type of expression \c e, if \c infer_only is false, then it also check whether \c e is type correct or not.
      \pre closed(e) */
@@ -106,6 +194,15 @@ index 544c709..bbcfc52 100644
  }
  
  expr type_checker::infer_type(expr const & e) {
+@@ -406,7 +416,7 @@ expr type_checker::whnf_fvar(expr const & e, bool cheap_rec, bool cheap_proj) {
+     if (optional<local_decl> decl = m_lctx.find_local_decl(e)) {
+         if (optional<expr> const & v = decl->get_value()) {
+             /* zeta-reduction */
+-            return whnf_core(*v, cheap_rec, cheap_proj);
++            return (demo_trace::purpose("use the variable's let value"), whnf_core(*v, cheap_rec, cheap_proj));
+         }
+     }
+     return e;
 @@ -462,6 +472,8 @@ static bool is_let_fvar(local_ctx const & lctx, expr const & e) {
      If `cheap == true`, then we don't perform delta-reduction when reducing major premise of recursors and projections.
      We also do not cache results. */
@@ -127,6 +224,56 @@ index 544c709..bbcfc52 100644
  
      // do the actual work
      expr r;
+@@ -499,7 +513,7 @@ expr type_checker::whnf_core(expr const & e, bool cheap_rec, bool cheap_proj) {
+         return whnf_fvar(e, cheap_rec, cheap_proj);
+     case expr_kind::Proj: {
+         if (auto m = reduce_proj(e, cheap_rec, cheap_proj))
+-            r = whnf_core(*m, cheap_rec, cheap_proj);
++            r = (demo_trace::purpose("reduce after taking the projection"), whnf_core(*m, cheap_rec, cheap_proj));
+         else
+             r = e;
+         break;
+@@ -507,7 +521,7 @@ expr type_checker::whnf_core(expr const & e, bool cheap_rec, bool cheap_proj) {
+     case expr_kind::App: {
+         buffer<expr> args;
+         expr f0 = get_app_rev_args(e, args);
+-        expr f = whnf_core(f0, cheap_rec, cheap_proj);
++        expr f = (demo_trace::purpose("reduce the function part"), whnf_core(f0, cheap_rec, cheap_proj));
+         if (is_lambda(f)) {
+             unsigned m = 1;
+             unsigned num_args = args.size();
+@@ -516,8 +530,8 @@ expr type_checker::whnf_core(expr const & e, bool cheap_rec, bool cheap_proj) {
+                 m++;
+             }
+             lean_assert(m <= num_args);
+-            r = whnf_core(mk_rev_app(instantiate(binding_body(f), m, args.data() + (num_args - m)), num_args - m, args.data()),
+-                          cheap_rec, cheap_proj);
++            r = (demo_trace::purpose("substitute the arguments (beta)"), whnf_core(mk_rev_app(instantiate(binding_body(f), m, args.data() + (num_args - m)), num_args - m, args.data()),
++                          cheap_rec, cheap_proj));
+         } else if (f == f0) {
+             if (auto r = reduce_recursor(e, cheap_rec, cheap_proj)) {
+                 if (m_diag) {
+@@ -526,17 +540,17 @@ expr type_checker::whnf_core(expr const & e, bool cheap_rec, bool cheap_proj) {
+                         m_diag->record_unfold(const_name(f));
+                 }
+                 /* iota-reduction and quotient reduction rules */
+-                return whnf_core(*r, cheap_rec, cheap_proj);
++                return (demo_trace::purpose("reduce after the recursor step"), whnf_core(*r, cheap_rec, cheap_proj));
+             } else {
+                 return e;
+             }
+         } else {
+-            r = whnf_core(mk_rev_app(f, args.size(), args.data()), cheap_rec, cheap_proj);
++            r = (demo_trace::purpose("reduce with the reduced function part"), whnf_core(mk_rev_app(f, args.size(), args.data()), cheap_rec, cheap_proj));
+         }
+         break;
+     }
+     case expr_kind::Let:
+-        r = whnf_core(instantiate(let_body(e), let_value(e)), cheap_rec, cheap_proj);
++        r = (demo_trace::purpose("substitute the let value (zeta)"), whnf_core(instantiate(let_body(e), let_value(e)), cheap_rec, cheap_proj));
+         break;
+     }
+ 
 @@ -544,6 +558,7 @@ expr type_checker::whnf_core(expr const & e, bool cheap_rec, bool cheap_proj) {
          m_st->m_whnf_core.insert(mk_pair(e, r));
      }
@@ -161,7 +308,7 @@ index 544c709..bbcfc52 100644
      // Do not cache easy cases
      switch (e.kind()) {
      case expr_kind::BVar:  case expr_kind::Sort: case expr_kind::MVar: case expr_kind::Pi:
-@@ -719,8 +739,10 @@ expr type_checker::whnf(expr const & e) {
+@@ -719,16 +739,18 @@ expr type_checker::whnf(expr const & e) {
  
      // check cache
      auto it = m_st->m_whnf.find(e);
@@ -173,6 +320,16 @@ index 544c709..bbcfc52 100644
  
      expr t = e;
      while (true) {
+-        expr t1 = whnf_core(t);
++        expr t1 = (demo_trace::purpose("reduce without unfolding"), whnf_core(t));
+         if (auto v = reduce_nat(t1)) {
+             m_st->m_whnf.insert(mk_pair(e, *v));
+             return *v;
+-        } else if (auto next_t = unfold_definition(t1)) {
++        } else if (auto next_t = (demo_trace::purpose("unfold the head definition"), unfold_definition(t1))) {
+             t = *next_t;
+         } else {
+             auto r = t1;
 @@ -736,6 +758,7 @@ expr type_checker::whnf(expr const & e) {
              return r;
          }
@@ -181,7 +338,16 @@ index 544c709..bbcfc52 100644
  }
  
  /** \brief Given lambda/Pi expressions \c t and \c s, return true iff \c t is def eq to \c s.
-@@ -764,6 +787,7 @@ bool type_checker::is_def_eq_binding(expr t, expr s) {
+@@ -756,7 +779,7 @@ bool type_checker::is_def_eq_binding(expr t, expr s) {
+         if (binding_domain(t) != binding_domain(s)) {
+             var_s_type = instantiate_rev(binding_domain(s), subst.size(), subst.data());
+             expr var_t_type = instantiate_rev(binding_domain(t), subst.size(), subst.data());
+-            if (!is_def_eq(var_t_type, *var_s_type))
++            if (!(demo_trace::purpose("compare binder types"), is_def_eq(var_t_type, *var_s_type)))
+                 return false;
+         }
+         if (has_loose_bvars(binding_body(t)) || has_loose_bvars(binding_body(s))) {
+@@ -764,14 +787,15 @@ bool type_checker::is_def_eq_binding(expr t, expr s) {
              if (!var_s_type)
                  var_s_type = instantiate_rev(binding_domain(s), subst.size(), subst.data());
              subst.push_back(m_lctx.mk_local_decl(m_st->m_ngen, binding_name(s), *var_s_type, binding_info(s)));
@@ -189,6 +355,91 @@ index 544c709..bbcfc52 100644
          } else {
              subst.push_back(*g_dont_care); // don't care
          }
+         t = binding_body(t);
+         s = binding_body(s);
+     } while (t.kind() == k && s.kind() == k);
+-    return is_def_eq(instantiate_rev(t, subst.size(), subst.data()),
+-                     instantiate_rev(s, subst.size(), subst.data()));
++    return (demo_trace::purpose("compare bodies"), is_def_eq(instantiate_rev(t, subst.size(), subst.data()),
++                     instantiate_rev(s, subst.size(), subst.data())));
+ }
+ 
+ bool type_checker::is_def_eq(level const & l1, level const & l2) {
+@@ -825,7 +849,7 @@ lbool type_checker::quick_is_def_eq(expr const & t, expr const & s) {
+     This method is used to implement an optimization in the method \c is_def_eq. */
+ bool type_checker::is_def_eq_args(expr t, expr s) {
+     while (is_app(t) && is_app(s)) {
+-        if (!is_def_eq(app_arg(t), app_arg(s)))
++        if (!(demo_trace::purpose("compare arguments"), is_def_eq(app_arg(t), app_arg(s))))
+             return false;
+         t = app_fn(t);
+         s = app_fn(s);
+@@ -877,10 +901,10 @@ bool type_checker::is_def_eq_app(expr const & t, expr const & s) {
+         buffer<expr> s_args;
+         expr t_fn = get_app_args(t, t_args);
+         expr s_fn = get_app_args(s, s_args);
+-        if (is_def_eq(t_fn, s_fn) && t_args.size() == s_args.size()) {
++        if ((demo_trace::purpose("compare functions"), is_def_eq(t_fn, s_fn)) && t_args.size() == s_args.size()) {
+             unsigned i = 0;
+             for (; i < t_args.size(); i++) {
+-                if (!is_def_eq(t_args[i], s_args[i]))
++                if (!(demo_trace::purpose("compare arguments"), is_def_eq(t_args[i], s_args[i])))
+                     break;
+             }
+             if (i == t_args.size())
+@@ -894,11 +918,11 @@ bool type_checker::is_def_eq_app(expr const & t, expr const & s) {
+     Return false otherwise. */
+ lbool type_checker::is_def_eq_proof_irrel(expr const & t, expr const & s) {
+     // Proof irrelevance support for Prop (aka Type.{0})
+-    expr t_type = infer_type(t);
+-    if (!is_prop(t_type))
++    expr t_type = (demo_trace::purpose("type of the left side (proof irrelevance)"), infer_type(t));
++    if (!(demo_trace::purpose("is that type a proposition?"), is_prop(t_type)))
+         return l_undef;
+-    expr s_type = infer_type(s);
+-    return to_lbool(is_def_eq(t_type, s_type));
++    expr s_type = (demo_trace::purpose("type of the right side"), infer_type(s));
++    return to_lbool((demo_trace::purpose("proofs of the same proposition are equal"), is_def_eq(t_type, s_type)));
+ }
+ 
+ bool type_checker::failed_before(expr const & t, expr const & s) const {
+@@ -976,21 +1000,21 @@ auto type_checker::lazy_delta_reduction_step(expr & t_n, expr & s_n) -> reductio
+         if (auto s_n_new = try_unfold_proj_app(s_n)) {
+             s_n = *s_n_new;
+         } else {
+-            t_n = whnf_core(*unfold_definition(t_n), false, true);
++            t_n = whnf_core(demo_trace::purpose("reduce after unfolding", *(demo_trace::purpose("unfold left side"), unfold_definition(t_n))), false, true);
+         }
+     } else if (!d_t && d_s) {
+         /* If `t_n` is a projection application, we try to unfold it instead. See comment above. */
+         if (auto t_n_new = try_unfold_proj_app(t_n)) {
+             t_n = *t_n_new;
+         } else {
+-            s_n = whnf_core(*unfold_definition(s_n), false, true);
++            s_n = whnf_core(demo_trace::purpose("reduce after unfolding", *(demo_trace::purpose("unfold right side"), unfold_definition(s_n))), false, true);
+         }
+     } else {
+         int c = compare(d_t->get_hints(), d_s->get_hints());
+         if (c < 0) {
+-            t_n = whnf_core(*unfold_definition(t_n), false, true);
++            t_n = whnf_core(demo_trace::purpose("reduce after unfolding", *(demo_trace::purpose("unfold left side"), unfold_definition(t_n))), false, true);
+         } else if (c > 0) {
+-            s_n = whnf_core(*unfold_definition(s_n), false, true);
++            s_n = whnf_core(demo_trace::purpose("reduce after unfolding", *(demo_trace::purpose("unfold right side"), unfold_definition(s_n))), false, true);
+         } else {
+             if (is_app(t_n) && is_app(s_n) && is_eqp(*d_t, *d_s) && d_t->get_hints().is_regular()) {
+                 // Optimization:
+@@ -1006,8 +1030,8 @@ auto type_checker::lazy_delta_reduction_step(expr & t_n, expr & s_n) -> reductio
+                     }
+                 }
+             }
+-            t_n = whnf_core(*unfold_definition(t_n), false, true);
+-            s_n = whnf_core(*unfold_definition(s_n), false, true);
++            t_n = whnf_core(demo_trace::purpose("reduce after unfolding", *(demo_trace::purpose("unfold left side"), unfold_definition(t_n))), false, true);
++            s_n = whnf_core(demo_trace::purpose("reduce after unfolding", *(demo_trace::purpose("unfold right side"), unfold_definition(s_n))), false, true);
+         }
+     }
+     switch (quick_is_def_eq(t_n, s_n)) {
 @@ -1126,6 +1150,8 @@ bool type_checker::is_def_eq_unit_like(expr const & t, expr const & s) {
  }
  
@@ -198,6 +449,40 @@ index 544c709..bbcfc52 100644
      scope_rec_depth guard;
      check_system("is_definitionally_equal", /* do_check_interrupted */ true);
      lbool r = quick_is_def_eq(t, s);
+@@ -1136,7 +1162,7 @@ bool type_checker::is_def_eq_core(expr const & t, expr const & s) {
+     // This code path is taken in particular when using the `decide` tactic, which produces
+     // proof terms of the form `Eq.refl true : decide p = true`.
+     if ((!has_fvar(t) || m_eager_reduce) && is_constant(s, *g_bool_true)) {
+-        if (is_constant(whnf(t), *g_bool_true)) {
++        if (is_constant((demo_trace::purpose("evaluate to Bool.true"), whnf(t)), *g_bool_true)) {
+             return true;
+         }
+     }
+@@ -1148,8 +1174,8 @@ bool type_checker::is_def_eq_core(expr const & t, expr const & s) {
+       and first try `a =?= b` before reducing `a.i` and `b.i`. Recall that `whnf_core` with `cheap_proj = true` still
+       reduces terms such as `{ fst := 10, snd := 20 }.1` to `10`.
+     */
+-    expr t_n = whnf_core(t, false, true);
+-    expr s_n = whnf_core(s, false, true);
++    expr t_n = (demo_trace::purpose("reduce left side without unfolding"), whnf_core(t, false, true));
++    expr s_n = (demo_trace::purpose("reduce right side without unfolding"), whnf_core(s, false, true));
+ 
+     if (!is_eqp(t_n, t) || !is_eqp(s_n, s)) {
+         r = quick_is_def_eq(t_n, s_n);
+@@ -1178,10 +1204,10 @@ bool type_checker::is_def_eq_core(expr const & t, expr const & s) {
+     }
+ 
+     // Invoke `whnf_core` again, but now using `whnf` to reduce projections.
+-    expr t_n_n = whnf_core(t_n);
+-    expr s_n_n = whnf_core(s_n);
++    expr t_n_n = (demo_trace::purpose("reduce left side, including projections"), whnf_core(t_n));
++    expr s_n_n = (demo_trace::purpose("reduce right side, including projections"), whnf_core(s_n));
+     if (!is_eqp(t_n_n, t_n) || !is_eqp(s_n_n, s_n))
+-        return is_def_eq_core(t_n_n, s_n_n);
++        return (demo_trace::purpose("compare the reduced sides"), is_def_eq_core(t_n_n, s_n_n));
+ 
+     // At this point, t_n and s_n are in weak head normal form (modulo metavariables and proof irrelevance)
+     if (is_def_eq_app(t_n, s_n))
 @@ -1200,6 +1226,7 @@ bool type_checker::is_def_eq_core(expr const & t, expr const & s) {
          return true;
  

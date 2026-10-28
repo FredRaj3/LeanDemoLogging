@@ -5,10 +5,17 @@
       "label": "Record the actual kernel trace",
       "type": "process",
       "command": "python3",
-      "args": ["scripts/trace.py"],
+      "args": ["scripts/trace.py", "--file", "${relativeFile}", "--declaration", "${input:declaration}"],
       "options": {"cwd": "${workspaceFolder}"},
       "problemMatcher": [],
       "presentation": {"reveal": "always", "panel": "dedicated"}
+    }
+  ],
+  "inputs": [
+    {
+      "id": "declaration",
+      "type": "promptString",
+      "description": "Full name of a theorem in the open file"
     }
   ]
 }

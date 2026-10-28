@@ -1,6 +1,6 @@
 {
   "command": [
-    "/Users/fred/Desktop/Math289/LeanDemoLogging/lean4/build/release/stage1/bin/lean",
+    "/Users/fred/Desktop/Math289/.claude/worktrees/lean-demo-logging-validation-2a2ac4/LeanDemoLogging/lean4/build/release/stage1/bin/lean",
     "-DElab.async=false",
     "-DstderrAsMessages=false",
     "tests/BadApplication.lean"

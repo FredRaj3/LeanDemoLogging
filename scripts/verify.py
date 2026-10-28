@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Check the real trace, rejection behavior, and preservation of the original demo."""
+import argparse
 import hashlib
 import json
 import os
@@ -8,9 +9,13 @@ import subprocess
 from render_trace import read_events
 
 ROOT = Path(__file__).resolve().parents[1]
+parser = argparse.ArgumentParser()
+parser.add_argument('--declaration', required=True, help='full name of the theorem to trace')
+parser.add_argument('--file', required=True, help='Lean file that declares it, relative to this project')
+args = parser.parse_args()
 native = ROOT / 'lean4/build/release/stage1/bin/lean'
 standard = Path(subprocess.check_output(['elan', 'which', 'lean'], cwd=ROOT, text=True).strip())
-demo = 'LeanDemoLogging/KernelDemo.lean'
+demo = args.file
 options = ['-DElab.async=false', '-DstderrAsMessages=false']
 clean_env = {k: v for k, v in os.environ.items() if not k.startswith('LEAN_KERNEL_TRACE_')}
 
@@ -25,17 +30,24 @@ baseline = run([standard, *options, demo])
 untraced = run([native, *options, demo])
 assert baseline.stdout == untraced.stdout, 'Instrumented compiler changed the demo output'
 assert not untraced.stderr, untraced.stderr
-run(['python3', 'scripts/trace.py'])
-assert (ROOT / 'traces/inj_comp.stdout.log').read_text() == baseline.stdout
-events = read_events(ROOT / 'traces/inj_comp.jsonl')
+run(['python3', 'scripts/trace.py', '--file', demo, '--declaration', args.declaration])
+trace = ROOT / 'traces' / f'{args.declaration}.jsonl'
+assert trace.with_suffix('.stdout.log').read_text() == baseline.stdout
+events = read_events(trace)
 assert events[-1]['status'] == 'accepted'
 assert [e['name'] for e in events if e['event'] == 'phase'] == ['statement', 'proof', 'comparison']
-context = {e['name']: e for e in events if e['phase'] == 'proof' and e['event'] == 'context'}
-assert context['h1']['type'] == '((f x) = (f y))', context['h1']
-assert context['h2']['type'] == '(x = y)', context['h2']
-assert 'h0' in context
-assert any(e['event'] == 'enter' and e['operation'] == 'unfold' and e['expr'] == 'Function.Injective' for e in events)
-assert any(e['event'] == 'enter' and e['operation'] == 'unfold' and e['expr'] == 'Function.comp' for e in events)
+
+
+def top_level(phase):
+    return [e for e in events if e['phase'] == phase and e['depth'] == 0 and e['event'] in ('enter', 'return')]
+
+
+assert top_level('statement')[0]['operation'] == 'check', 'No top-level check of the statement'
+assert top_level('proof')[0]['operation'] == 'check', 'No top-level check of the proof'
+assert top_level('comparison')[-1].get('result') == 'true', 'Final type comparison did not succeed'
+calls = [e for e in events if e['event'] == 'enter']
+assert all('purpose' in e for e in calls if e['depth'] == 0), 'A top-level call has no recorded purpose'
+labeled = sum('purpose' in e for e in calls)
 
 run(['python3', 'scripts/trace.py', '--file', 'tests/BadApplication.lean',
      '--declaration', 'inj_comp_bad', '--output', 'traces/rejected-application.jsonl'])
@@ -52,10 +64,15 @@ unused.write_text('')
 run([native, *options, demo], dict(clean_env, LEAN_KERNEL_TRACE_DECL='no_such_theorem', LEAN_KERNEL_TRACE_FILE=str(unused)))
 assert unused.read_text() == ''
 
-originals = json.loads((ROOT / 'traces/original-demo-sha256.json').read_text())
-for relative, digest in originals.items():
-    p = ROOT.parent / relative
-    assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f'Original file changed: {relative}'
-print(f'PASS: {len(events)} balanced native kernel events; h0/h1/h2 types; unfolding; real rejection; declaration filter.')
+print(f'PASS: {len(events)} balanced native kernel events; statement, proof and comparison checks; real rejection; declaration filter.')
 print('PASS: original and instrumented compiler outputs agree, with logging on and off.')
-print('PASS: all original LeanDemo files match their initial hashes.')
+print(f'INFO: {labeled} of {len(calls)} calls have a recorded purpose.')
+
+originals = json.loads((ROOT / 'traces/original-demo-sha256.json').read_text())
+if (ROOT.parent / 'LeanDemo').is_dir():
+    for relative, digest in originals.items():
+        p = ROOT.parent / relative
+        assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f'Original file changed: {relative}'
+    print('PASS: all original LeanDemo files match their initial hashes.')
+else:
+    print('SKIP: no ../LeanDemo folder, so the original-file hash check was not run.')

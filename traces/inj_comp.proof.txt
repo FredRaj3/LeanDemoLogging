@@ -1,447 +1,447 @@
 0190 PHASE: proof
-0191 CHECK #69: (fun {α : Type} => (fun {β : Type} => (fun {γ : Type} => (fun {f : (α → β)} => (fun {g : (β → γ)} => (fun (hg : (Function.Injective g)) => (fun (hf : (Function.Injective f)) => (fun (x : α) => (fun (y : α) => (fun (h0 : (((g ∘ f) x) = ((g ∘ f) y))) => (let h1 : ((f x) = (f y)) := (hg (f x) (f y) h0); (let h2 : (x = y) := (hf x y h1); h2))))))))))))
-0192   CHECK #70: Type
+0191 CHECK #69 (check the proof): (fun {α : Type} => (fun {β : Type} => (fun {γ : Type} => (fun {f : (α → β)} => (fun {g : (β → γ)} => (fun (hg : (Function.Injective g)) => (fun (hf : (Function.Injective f)) => (fun (x : α) => (fun (y : α) => (fun (h0 : ((Function.comp g f x) = (Function.comp g f y))) => (let h1 : ((f x) = (f y)) := (hg (f x) (f y) h0); (let h2 : (x = y) := (hf x y h1); h2))))))))))))
+0192   CHECK #70 (binder type must be a type): Type
 0193     CACHE HIT: m_infer_type[infer_only]
 0194   RETURN #70: Sort 2
 0195   CONTEXT: α : Type
-0196   CHECK #71: Type
+0196   CHECK #71 (binder type must be a type): Type
 0197     CACHE HIT: m_infer_type[infer_only]
 0198   RETURN #71: Sort 2
 0199   CONTEXT: β : Type
-0200   CHECK #72: Type
+0200   CHECK #72 (binder type must be a type): Type
 0201     CACHE HIT: m_infer_type[infer_only]
 0202   RETURN #72: Sort 2
 0203   CONTEXT: γ : Type
-0204   CHECK #73: (α → β)
-0205     CHECK #74: α
+0204   CHECK #73 (binder type must be a type): (α → β)
+0205     CHECK #74 (binder type must be a type): α
 0206     RETURN #74: Type
 0207     CONTEXT: a._@._internal._hyg.0 : α
-0208     CHECK #75: β
+0208     CHECK #75 (body must be a type): β
 0209     RETURN #75: Type
 0210   RETURN #73: Type
 0211   CONTEXT: f : (α → β)
-0212   CHECK #76: (β → γ)
-0213     CHECK #77: β
+0212   CHECK #76 (binder type must be a type): (β → γ)
+0213     CHECK #77 (binder type must be a type): β
 0214       CACHE HIT: m_infer_type[infer_only]
 0215     RETURN #77: Type
 0216     CONTEXT: a._@._internal._hyg.0 : β
-0217     CHECK #78: γ
+0217     CHECK #78 (body must be a type): γ
 0218     RETURN #78: Type
 0219   RETURN #76: Type
 0220   CONTEXT: g : (β → γ)
-0221   CHECK #79: (Function.Injective g)
-0222     CHECK #80: (Function.Injective β γ)
-0223       CHECK #81: (Function.Injective β)
-0224         CHECK #82: Function.Injective
+0221   CHECK #79 (binder type must be a type): (Function.Injective g)
+0222     CHECK #80 (type of the function): (@Function.Injective β γ)
+0223       CHECK #81 (type of the function): (@Function.Injective β)
+0224         CHECK #82 (type of the function): Function.Injective
 0225           CACHE HIT: m_infer_type[infer_only]
 0226         RETURN #82: (∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))
-0227         CHECK #83: β
+0227         CHECK #83 (type of the argument): β
 0228           CACHE HIT: m_infer_type[infer_only]
 0229         RETURN #83: Type
 0230         ARGUMENT TYPE: Type
 0230         EXPECTED TYPE: Type
-0231         DEFEQ #84: Type  =?=  Type
+0231         DEFEQ #84 (argument has the expected type): Type  =?=  Type
 0232         RETURN #84: true
 0233       RETURN #81: (∀ {β : Type}, ((β → β) → Prop))
-0234       CHECK #85: γ
+0234       CHECK #85 (type of the argument): γ
 0235         CACHE HIT: m_infer_type[infer_only]
 0236       RETURN #85: Type
 0237       ARGUMENT TYPE: Type
 0237       EXPECTED TYPE: Type
-0238       DEFEQ #86: Type  =?=  Type
+0238       DEFEQ #86 (argument has the expected type): Type  =?=  Type
 0239       RETURN #86: true
 0240     RETURN #80: ((β → γ) → Prop)
-0241     CHECK #87: g
+0241     CHECK #87 (type of the argument): g
 0242     RETURN #87: (β → γ)
 0243     ARGUMENT TYPE: (β → γ)
 0243     EXPECTED TYPE: (β → γ)
-0244     DEFEQ #88: (β → γ)  =?=  (β → γ)
+0244     DEFEQ #88 (argument has the expected type): (β → γ)  =?=  (β → γ)
 0245     RETURN #88: true
 0246   RETURN #79: Prop
 0247   CONTEXT: hg : (Function.Injective g)
-0248   CHECK #89: (Function.Injective f)
-0249     CHECK #90: (Function.Injective α β)
-0250       CHECK #91: (Function.Injective α)
-0251         CHECK #92: Function.Injective
+0248   CHECK #89 (binder type must be a type): (Function.Injective f)
+0249     CHECK #90 (type of the function): (@Function.Injective α β)
+0250       CHECK #91 (type of the function): (@Function.Injective α)
+0251         CHECK #92 (type of the function): Function.Injective
 0252           CACHE HIT: m_infer_type[infer_only]
 0253         RETURN #92: (∀ {α : Type}, (∀ {β : Type}, ((α → β) → Prop)))
-0254         CHECK #93: α
+0254         CHECK #93 (type of the argument): α
 0255           CACHE HIT: m_infer_type[infer_only]
 0256         RETURN #93: Type
 0257         ARGUMENT TYPE: Type
 0257         EXPECTED TYPE: Type
-0258         DEFEQ #94: Type  =?=  Type
+0258         DEFEQ #94 (argument has the expected type): Type  =?=  Type
 0259         RETURN #94: true
 0260       RETURN #91: (∀ {β : Type}, ((α → β) → Prop))
-0261       CHECK #95: β
+0261       CHECK #95 (type of the argument): β
 0262         CACHE HIT: m_infer_type[infer_only]
 0263       RETURN #95: Type
 0264       ARGUMENT TYPE: Type
 0264       EXPECTED TYPE: Type
-0265       DEFEQ #96: Type  =?=  Type
+0265       DEFEQ #96 (argument has the expected type): Type  =?=  Type
 0266       RETURN #96: true
 0267     RETURN #90: ((α → β) → Prop)
-0268     CHECK #97: f
+0268     CHECK #97 (type of the argument): f
 0269     RETURN #97: (α → β)
 0270     ARGUMENT TYPE: (α → β)
 0270     EXPECTED TYPE: (α → β)
-0271     DEFEQ #98: (α → β)  =?=  (α → β)
+0271     DEFEQ #98 (argument has the expected type): (α → β)  =?=  (α → β)
 0272     RETURN #98: true
 0273   RETURN #89: Prop
 0274   CONTEXT: hf : (Function.Injective f)
-0275   CHECK #99: α
+0275   CHECK #99 (binder type must be a type): α
 0276     CACHE HIT: m_infer_type[infer_only]
 0277   RETURN #99: Type
 0278   CONTEXT: x : α
-0279   CHECK #100: α
+0279   CHECK #100 (binder type must be a type): α
 0280     CACHE HIT: m_infer_type[infer_only]
 0281   RETURN #100: Type
 0282   CONTEXT: y : α
-0283   CHECK #101: (((g ∘ f) x) = ((g ∘ f) y))
-0284     CHECK #102: (Eq γ ((g ∘ f) x))
-0285       CHECK #103: (Eq γ)
-0286         CHECK #104: Eq
+0283   CHECK #101 (binder type must be a type): ((Function.comp g f x) = (Function.comp g f y))
+0284     CHECK #102 (type of the function): (Eq (Function.comp g f x))
+0285       CHECK #103 (type of the function): (@Eq γ)
+0286         CHECK #104 (type of the function): Eq
 0287         RETURN #104: (∀ {α : Type}, (α → (α → Prop)))
-0288         CHECK #105: γ
+0288         CHECK #105 (type of the argument): γ
 0289           CACHE HIT: m_infer_type[infer_only]
 0290         RETURN #105: Type
 0291         ARGUMENT TYPE: Type
 0291         EXPECTED TYPE: Type
-0292         DEFEQ #106: Type  =?=  Type
+0292         DEFEQ #106 (argument has the expected type): Type  =?=  Type
 0293         RETURN #106: true
 0294       RETURN #103: (γ → (γ → Prop))
-0295       CHECK #107: ((g ∘ f) x)
-0296         CHECK #108: (g ∘ f)
-0297           CHECK #109: (Function.comp α β γ g)
-0298             CHECK #110: (Function.comp α β γ)
-0299               CHECK #111: (Function.comp α β)
-0300                 CHECK #112: (Function.comp α)
-0301                   CHECK #113: Function.comp
+0295       CHECK #107 (type of the argument): (Function.comp g f x)
+0296         CHECK #108 (type of the function): (Function.comp g f)
+0297           CHECK #109 (type of the function): (Function.comp g)
+0298             CHECK #110 (type of the function): (@Function.comp α β γ)
+0299               CHECK #111 (type of the function): (@Function.comp α β)
+0300                 CHECK #112 (type of the function): (@Function.comp α)
+0301                   CHECK #113 (type of the function): Function.comp
 0302                     CACHE HIT: m_infer_type[infer_only]
 0303                   RETURN #113: (∀ {α : Type}, (∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))))
-0304                   CHECK #114: α
+0304                   CHECK #114 (type of the argument): α
 0305                     CACHE HIT: m_infer_type[infer_only]
 0306                   RETURN #114: Type
 0307                   ARGUMENT TYPE: Type
 0307                   EXPECTED TYPE: Type
-0308                   DEFEQ #115: Type  =?=  Type
+0308                   DEFEQ #115 (argument has the expected type): Type  =?=  Type
 0309                   RETURN #115: true
 0310                 RETURN #112: (∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ)))))
-0311                 CHECK #116: β
+0311                 CHECK #116 (type of the argument): β
 0312                   CACHE HIT: m_infer_type[infer_only]
 0313                 RETURN #116: Type
 0314                 ARGUMENT TYPE: Type
 0314                 EXPECTED TYPE: Type
-0315                 DEFEQ #117: Type  =?=  Type
+0315                 DEFEQ #117 (argument has the expected type): Type  =?=  Type
 0316                 RETURN #117: true
 0317               RETURN #111: (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))
-0318               CHECK #118: γ
+0318               CHECK #118 (type of the argument): γ
 0319                 CACHE HIT: m_infer_type[infer_only]
 0320               RETURN #118: Type
 0321               ARGUMENT TYPE: Type
 0321               EXPECTED TYPE: Type
-0322               DEFEQ #119: Type  =?=  Type
+0322               DEFEQ #119 (argument has the expected type): Type  =?=  Type
 0323               RETURN #119: true
 0324             RETURN #110: ((β → γ) → ((α → β) → (α → γ)))
-0325             CHECK #120: g
+0325             CHECK #120 (type of the argument): g
 0326               CACHE HIT: m_infer_type[infer_only]
 0327             RETURN #120: (β → γ)
 0328             ARGUMENT TYPE: (β → γ)
 0328             EXPECTED TYPE: (β → γ)
-0329             DEFEQ #121: (β → γ)  =?=  (β → γ)
+0329             DEFEQ #121 (argument has the expected type): (β → γ)  =?=  (β → γ)
 0330             RETURN #121: true
 0331           RETURN #109: ((α → β) → (α → γ))
-0332           CHECK #122: f
+0332           CHECK #122 (type of the argument): f
 0333             CACHE HIT: m_infer_type[infer_only]
 0334           RETURN #122: (α → β)
 0335           ARGUMENT TYPE: (α → β)
 0335           EXPECTED TYPE: (α → β)
-0336           DEFEQ #123: (α → β)  =?=  (α → β)
+0336           DEFEQ #123 (argument has the expected type): (α → β)  =?=  (α → β)
 0337           RETURN #123: true
 0338         RETURN #108: (α → γ)
-0339         CHECK #124: x
+0339         CHECK #124 (type of the argument): x
 0340         RETURN #124: α
 0341         ARGUMENT TYPE: α
 0341         EXPECTED TYPE: α
-0342         DEFEQ #125: α  =?=  α
+0342         DEFEQ #125 (argument has the expected type): α  =?=  α
 0343         RETURN #125: true
 0344       RETURN #107: γ
 0345       ARGUMENT TYPE: γ
 0345       EXPECTED TYPE: γ
-0346       DEFEQ #126: γ  =?=  γ
+0346       DEFEQ #126 (argument has the expected type): γ  =?=  γ
 0347       RETURN #126: true
 0348     RETURN #102: (γ → Prop)
-0349     CHECK #127: ((g ∘ f) y)
-0350       CHECK #128: (g ∘ f)
+0349     CHECK #127 (type of the argument): (Function.comp g f y)
+0350       CHECK #128 (type of the function): (Function.comp g f)
 0351         CACHE HIT: m_infer_type[infer_only]
 0352       RETURN #128: (α → γ)
-0353       CHECK #129: y
+0353       CHECK #129 (type of the argument): y
 0354       RETURN #129: α
 0355       ARGUMENT TYPE: α
 0355       EXPECTED TYPE: α
-0356       DEFEQ #130: α  =?=  α
+0356       DEFEQ #130 (argument has the expected type): α  =?=  α
 0357       RETURN #130: true
 0358     RETURN #127: γ
 0359     ARGUMENT TYPE: γ
 0359     EXPECTED TYPE: γ
-0360     DEFEQ #131: γ  =?=  γ
+0360     DEFEQ #131 (argument has the expected type): γ  =?=  γ
 0361     RETURN #131: true
 0362   RETURN #101: Prop
-0363   CONTEXT: h0 : (((g ∘ f) x) = ((g ∘ f) y))
-0364   CHECK #132: (let h1 : ((f x) = (f y)) := (hg (f x) (f y) h0); (let h2 : (x = y) := (hf x y h1); h2))
-0365     CHECK #133: ((f x) = (f y))
-0366       CHECK #134: (Eq β (f x))
-0367         CHECK #135: (Eq β)
-0368           CHECK #136: Eq
+0363   CONTEXT: h0 : ((Function.comp g f x) = (Function.comp g f y))
+0364   CHECK #132 (type of the body): (let h1 : ((f x) = (f y)) := (hg (f x) (f y) h0); (let h2 : (x = y) := (hf x y h1); h2))
+0365     CHECK #133 (declared type must be a type): ((f x) = (f y))
+0366       CHECK #134 (type of the function): (Eq (f x))
+0367         CHECK #135 (type of the function): (@Eq β)
+0368           CHECK #136 (type of the function): Eq
 0369             CACHE HIT: m_infer_type[infer_only]
 0370           RETURN #136: (∀ {α : Type}, (α → (α → Prop)))
-0371           CHECK #137: β
+0371           CHECK #137 (type of the argument): β
 0372             CACHE HIT: m_infer_type[infer_only]
 0373           RETURN #137: Type
 0374           ARGUMENT TYPE: Type
 0374           EXPECTED TYPE: Type
-0375           DEFEQ #138: Type  =?=  Type
+0375           DEFEQ #138 (argument has the expected type): Type  =?=  Type
 0376           RETURN #138: true
 0377         RETURN #135: (β → (β → Prop))
-0378         CHECK #139: (f x)
-0379           CHECK #140: f
+0378         CHECK #139 (type of the argument): (f x)
+0379           CHECK #140 (type of the function): f
 0380             CACHE HIT: m_infer_type[infer_only]
 0381           RETURN #140: (α → β)
-0382           CHECK #141: x
+0382           CHECK #141 (type of the argument): x
 0383             CACHE HIT: m_infer_type[infer_only]
 0384           RETURN #141: α
 0385           ARGUMENT TYPE: α
 0385           EXPECTED TYPE: α
-0386           DEFEQ #142: α  =?=  α
+0386           DEFEQ #142 (argument has the expected type): α  =?=  α
 0387           RETURN #142: true
 0388         RETURN #139: β
 0389         ARGUMENT TYPE: β
 0389         EXPECTED TYPE: β
-0390         DEFEQ #143: β  =?=  β
+0390         DEFEQ #143 (argument has the expected type): β  =?=  β
 0391         RETURN #143: true
 0392       RETURN #134: (β → Prop)
-0393       CHECK #144: (f y)
-0394         CHECK #145: f
+0393       CHECK #144 (type of the argument): (f y)
+0394         CHECK #145 (type of the function): f
 0395           CACHE HIT: m_infer_type[infer_only]
 0396         RETURN #145: (α → β)
-0397         CHECK #146: y
+0397         CHECK #146 (type of the argument): y
 0398           CACHE HIT: m_infer_type[infer_only]
 0399         RETURN #146: α
 0400         ARGUMENT TYPE: α
 0400         EXPECTED TYPE: α
-0401         DEFEQ #147: α  =?=  α
+0401         DEFEQ #147 (argument has the expected type): α  =?=  α
 0402         RETURN #147: true
 0403       RETURN #144: β
 0404       ARGUMENT TYPE: β
 0404       EXPECTED TYPE: β
-0405       DEFEQ #148: β  =?=  β
+0405       DEFEQ #148 (argument has the expected type): β  =?=  β
 0406       RETURN #148: true
 0407     RETURN #133: Prop
-0408     CHECK #149: (hg (f x) (f y) h0)
-0409       CHECK #150: (hg (f x) (f y))
-0410         CHECK #151: (hg (f x))
-0411           CHECK #152: hg
+0408     CHECK #149 (type of the value): (hg (f x) (f y) h0)
+0409       CHECK #150 (type of the function): (hg (f x) (f y))
+0410         CHECK #151 (type of the function): (hg (f x))
+0411           CHECK #152 (type of the function): hg
 0412           RETURN #152: (Function.Injective g)
-0413           WHNF #153: (Function.Injective g)
-0414             WHNF_CORE #154: (Function.Injective g)
-0415               WHNF_CORE #155: Function.Injective
+0413           WHNF #153 (reduce to expose a function type): (Function.Injective g)
+0414             WHNF_CORE #154 (reduce without unfolding): (Function.Injective g)
+0415               WHNF_CORE #155 (reduce the function part): Function.Injective
 0416               RETURN #155: Function.Injective
 0417             RETURN #154: (Function.Injective g)
-0418             UNFOLD #156: Function.Injective
+0418             UNFOLD #156 (unfold the head definition): Function.Injective
 0419             RETURN #156: (fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂)))))))
-0420             WHNF_CORE #157: ((fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))))) β γ g)
-0421               WHNF_CORE #158: (fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂)))))))
+0420             WHNF_CORE #157 (reduce without unfolding): ((fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))))) β γ g)
+0421               WHNF_CORE #158 (reduce the function part): (fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂)))))))
 0422               RETURN #158: (fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂)))))))
-0423               WHNF_CORE #159: (∀ ⦃a₁ : β⦄, (∀ ⦃a₂ : β⦄, (((g a₁) = (g a₂)) → (a₁ = a₂))))
+0423               WHNF_CORE #159 (substitute the arguments (beta)): (∀ ⦃a₁ : β⦄, (∀ ⦃a₂ : β⦄, (((g a₁) = (g a₂)) → (a₁ = a₂))))
 0424               RETURN #159: (∀ ⦃a₁ : β⦄, (∀ ⦃a₂ : β⦄, (((g a₁) = (g a₂)) → (a₁ = a₂))))
 0425             RETURN #157: (∀ ⦃a₁ : β⦄, (∀ ⦃a₂ : β⦄, (((g a₁) = (g a₂)) → (a₁ = a₂))))
-0426             UNFOLD #160: (∀ ⦃a₁ : β⦄, (∀ ⦃a₂ : β⦄, (((g a₁) = (g a₂)) → (a₁ = a₂))))
+0426             UNFOLD #160 (unfold the head definition): (∀ ⦃a₁ : β⦄, (∀ ⦃a₂ : β⦄, (((g a₁) = (g a₂)) → (a₁ = a₂))))
 0427             RETURN #160: no unfolding
 0428           RETURN #153: (∀ ⦃a₁ : β⦄, (∀ ⦃a₂ : β⦄, (((g a₁) = (g a₂)) → (a₁ = a₂))))
-0429           CHECK #161: (f x)
+0429           CHECK #161 (type of the argument): (f x)
 0430             CACHE HIT: m_infer_type[infer_only]
 0431           RETURN #161: β
 0432           ARGUMENT TYPE: β
 0432           EXPECTED TYPE: β
-0433           DEFEQ #162: β  =?=  β
+0433           DEFEQ #162 (argument has the expected type): β  =?=  β
 0434           RETURN #162: true
 0435         RETURN #151: (∀ ⦃a₂ : β⦄, (((g (f x)) = (g a₂)) → ((f x) = a₂)))
-0436         CHECK #163: (f y)
+0436         CHECK #163 (type of the argument): (f y)
 0437           CACHE HIT: m_infer_type[infer_only]
 0438         RETURN #163: β
 0439         ARGUMENT TYPE: β
 0439         EXPECTED TYPE: β
-0440         DEFEQ #164: β  =?=  β
+0440         DEFEQ #164 (argument has the expected type): β  =?=  β
 0441         RETURN #164: true
 0442       RETURN #150: (((g (f x)) = (g (f y))) → ((f x) = (f y)))
-0443       CHECK #165: h0
-0444       RETURN #165: (((g ∘ f) x) = ((g ∘ f) y))
-0445       ARGUMENT TYPE: (((g ∘ f) x) = ((g ∘ f) y))
+0443       CHECK #165 (type of the argument): h0
+0444       RETURN #165: ((Function.comp g f x) = (Function.comp g f y))
+0445       ARGUMENT TYPE: ((Function.comp g f x) = (Function.comp g f y))
 0445       EXPECTED TYPE: ((g (f x)) = (g (f y)))
-0446       DEFEQ #166: (((g ∘ f) x) = ((g ∘ f) y))  =?=  ((g (f x)) = (g (f y)))
-0447         WHNF_CORE #167: (((g ∘ f) x) = ((g ∘ f) y))
-0448           WHNF_CORE #168: Eq
+0446       DEFEQ #166 (argument has the expected type): ((Function.comp g f x) = (Function.comp g f y))  =?=  ((g (f x)) = (g (f y)))
+0447         WHNF_CORE #167 (reduce left side without unfolding): ((Function.comp g f x) = (Function.comp g f y))
+0448           WHNF_CORE #168 (reduce the function part): Eq
 0449           RETURN #168: Eq
-0450         RETURN #167: (((g ∘ f) x) = ((g ∘ f) y))
-0451         WHNF_CORE #169: ((g (f x)) = (g (f y)))
-0452           WHNF_CORE #170: Eq
+0450         RETURN #167: ((Function.comp g f x) = (Function.comp g f y))
+0451         WHNF_CORE #169 (reduce right side without unfolding): ((g (f x)) = (g (f y)))
+0452           WHNF_CORE #170 (reduce the function part): Eq
 0453           RETURN #170: Eq
 0454         RETURN #169: ((g (f x)) = (g (f y)))
-0455         INFER #171: (((g ∘ f) x) = ((g ∘ f) y))
-0456           INFER #172: Eq
+0455         INFER #171 (type of the left side (proof irrelevance)): ((Function.comp g f x) = (Function.comp g f y))
+0456           INFER #172 (type of the function): Eq
 0457           RETURN #172: (∀ {α : Type}, (α → (α → Prop)))
 0458         RETURN #171: Prop
-0459         INFER #173: Prop
+0459         INFER #173 (is that type a proposition?): Prop
 0460         RETURN #173: Type
-0461         WHNF_CORE #174: (((g ∘ f) x) = ((g ∘ f) y))
-0462           WHNF_CORE #175: Eq
+0461         WHNF_CORE #174 (reduce left side, including projections): ((Function.comp g f x) = (Function.comp g f y))
+0462           WHNF_CORE #175 (reduce the function part): Eq
 0463           RETURN #175: Eq
-0464         RETURN #174: (((g ∘ f) x) = ((g ∘ f) y))
-0465         WHNF_CORE #176: ((g (f x)) = (g (f y)))
-0466           WHNF_CORE #177: Eq
+0464         RETURN #174: ((Function.comp g f x) = (Function.comp g f y))
+0465         WHNF_CORE #176 (reduce right side, including projections): ((g (f x)) = (g (f y)))
+0466           WHNF_CORE #177 (reduce the function part): Eq
 0467           RETURN #177: Eq
 0468         RETURN #176: ((g (f x)) = (g (f y)))
-0469         DEFEQ #178: Eq  =?=  Eq
+0469         DEFEQ #178 (compare functions): Eq  =?=  Eq
 0470         RETURN #178: true
-0471         DEFEQ #179: γ  =?=  γ
+0471         DEFEQ #179 (compare arguments): γ  =?=  γ
 0472         RETURN #179: true
-0473         DEFEQ #180: ((g ∘ f) x)  =?=  (g (f x))
-0474           WHNF_CORE #181: ((g ∘ f) x)
-0475             WHNF_CORE #182: Function.comp
+0473         DEFEQ #180 (compare arguments): (Function.comp g f x)  =?=  (g (f x))
+0474           WHNF_CORE #181 (reduce left side without unfolding): (Function.comp g f x)
+0475             WHNF_CORE #182 (reduce the function part): Function.comp
 0476             RETURN #182: Function.comp
-0477           RETURN #181: ((g ∘ f) x)
-0478           WHNF_CORE #183: (g (f x))
-0479             WHNF_CORE #184: g
+0477           RETURN #181: (Function.comp g f x)
+0478           WHNF_CORE #183 (reduce right side without unfolding): (g (f x))
+0479             WHNF_CORE #184 (reduce the function part): g
 0480             RETURN #184: g
 0481           RETURN #183: (g (f x))
-0482           INFER #185: ((g ∘ f) x)
-0483             INFER #186: Function.comp
+0482           INFER #185 (type of the left side (proof irrelevance)): (Function.comp g f x)
+0483             INFER #186 (type of the function): Function.comp
 0484             RETURN #186: (∀ {α : Type}, (∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))))
 0485           RETURN #185: γ
-0486           INFER #187: γ
+0486           INFER #187 (is that type a proposition?): γ
 0487           RETURN #187: Type
-0488           UNFOLD #188: Function.comp
+0488           UNFOLD #188 (unfold left side): Function.comp
 0489           RETURN #188: (fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x))))))))
-0490           WHNF_CORE #189: ((fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x)))))))) α β γ g f x)
-0491             WHNF_CORE #190: (fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x))))))))
+0490           WHNF_CORE #189 (reduce after unfolding): ((fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x)))))))) α β γ g f x)
+0491             WHNF_CORE #190 (reduce the function part): (fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x))))))))
 0492             RETURN #190: (fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x))))))))
-0493             WHNF_CORE #191: (g (f x))
-0494               WHNF_CORE #192: g
+0493             WHNF_CORE #191 (substitute the arguments (beta)): (g (f x))
+0494               WHNF_CORE #192 (reduce the function part): g
 0495               RETURN #192: g
 0496             RETURN #191: (g (f x))
 0497           RETURN #189: (g (f x))
 0498         RETURN #180: true
-0499         DEFEQ #193: ((g ∘ f) y)  =?=  (g (f y))
-0500           WHNF_CORE #194: ((g ∘ f) y)
-0501             WHNF_CORE #195: Function.comp
+0499         DEFEQ #193 (compare arguments): (Function.comp g f y)  =?=  (g (f y))
+0500           WHNF_CORE #194 (reduce left side without unfolding): (Function.comp g f y)
+0501             WHNF_CORE #195 (reduce the function part): Function.comp
 0502             RETURN #195: Function.comp
-0503           RETURN #194: ((g ∘ f) y)
-0504           WHNF_CORE #196: (g (f y))
-0505             WHNF_CORE #197: g
+0503           RETURN #194: (Function.comp g f y)
+0504           WHNF_CORE #196 (reduce right side without unfolding): (g (f y))
+0505             WHNF_CORE #197 (reduce the function part): g
 0506             RETURN #197: g
 0507           RETURN #196: (g (f y))
-0508           INFER #198: ((g ∘ f) y)
-0509             INFER #199: Function.comp
+0508           INFER #198 (type of the left side (proof irrelevance)): (Function.comp g f y)
+0509             INFER #199 (type of the function): Function.comp
 0510               CACHE HIT: m_infer_type[infer_only]
 0511             RETURN #199: (∀ {α : Type}, (∀ {β : Type}, (∀ {δ : Type}, ((β → δ) → ((α → β) → (α → δ))))))
 0512           RETURN #198: γ
-0513           INFER #200: γ
+0513           INFER #200 (is that type a proposition?): γ
 0514             CACHE HIT: m_infer_type[infer_only]
 0515           RETURN #200: Type
-0516           UNFOLD #201: Function.comp
+0516           UNFOLD #201 (unfold left side): Function.comp
 0517           RETURN #201: (fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x))))))))
-0518           WHNF_CORE #202: ((fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x)))))))) α β γ g f y)
-0519             WHNF_CORE #203: (fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x))))))))
+0518           WHNF_CORE #202 (reduce after unfolding): ((fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x)))))))) α β γ g f y)
+0519             WHNF_CORE #203 (reduce the function part): (fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x))))))))
 0520             RETURN #203: (fun {α : Type} => (fun {β : Type} => (fun {δ : Type} => (fun (f : (β → δ)) => (fun (g : (α → β)) => (fun (x : α) => (f (g x))))))))
-0521             WHNF_CORE #204: (g (f y))
-0522               WHNF_CORE #205: g
+0521             WHNF_CORE #204 (substitute the arguments (beta)): (g (f y))
+0522               WHNF_CORE #205 (reduce the function part): g
 0523               RETURN #205: g
 0524             RETURN #204: (g (f y))
 0525           RETURN #202: (g (f y))
 0526         RETURN #193: true
 0527       RETURN #166: true
 0528     RETURN #149: ((f x) = (f y))
-0529     DEFEQ #206: ((f x) = (f y))  =?=  ((f x) = (f y))
+0529     DEFEQ #206 (value has the declared type): ((f x) = (f y))  =?=  ((f x) = (f y))
 0530     RETURN #206: true
 0531     CONTEXT: h1 : ((f x) = (f y)) := (hg (f x) (f y) h0)
-0532     CHECK #207: (x = y)
-0533       CHECK #208: (Eq α x)
-0534         CHECK #209: (Eq α)
-0535           CHECK #210: Eq
+0532     CHECK #207 (declared type must be a type): (x = y)
+0533       CHECK #208 (type of the function): (Eq x)
+0534         CHECK #209 (type of the function): (@Eq α)
+0535           CHECK #210 (type of the function): Eq
 0536             CACHE HIT: m_infer_type[infer_only]
 0537           RETURN #210: (∀ {α : Type}, (α → (α → Prop)))
-0538           CHECK #211: α
+0538           CHECK #211 (type of the argument): α
 0539             CACHE HIT: m_infer_type[infer_only]
 0540           RETURN #211: Type
 0541           ARGUMENT TYPE: Type
 0541           EXPECTED TYPE: Type
-0542           DEFEQ #212: Type  =?=  Type
+0542           DEFEQ #212 (argument has the expected type): Type  =?=  Type
 0543           RETURN #212: true
 0544         RETURN #209: (α → (α → Prop))
-0545         CHECK #213: x
+0545         CHECK #213 (type of the argument): x
 0546           CACHE HIT: m_infer_type[infer_only]
 0547         RETURN #213: α
 0548         ARGUMENT TYPE: α
 0548         EXPECTED TYPE: α
-0549         DEFEQ #214: α  =?=  α
+0549         DEFEQ #214 (argument has the expected type): α  =?=  α
 0550         RETURN #214: true
 0551       RETURN #208: (α → Prop)
-0552       CHECK #215: y
+0552       CHECK #215 (type of the argument): y
 0553         CACHE HIT: m_infer_type[infer_only]
 0554       RETURN #215: α
 0555       ARGUMENT TYPE: α
 0555       EXPECTED TYPE: α
-0556       DEFEQ #216: α  =?=  α
+0556       DEFEQ #216 (argument has the expected type): α  =?=  α
 0557       RETURN #216: true
 0558     RETURN #207: Prop
-0559     CHECK #217: (hf x y h1)
-0560       CHECK #218: (hf x y)
-0561         CHECK #219: (hf x)
-0562           CHECK #220: hf
+0559     CHECK #217 (type of the value): (hf x y h1)
+0560       CHECK #218 (type of the function): (hf x y)
+0561         CHECK #219 (type of the function): (hf x)
+0562           CHECK #220 (type of the function): hf
 0563           RETURN #220: (Function.Injective f)
-0564           WHNF #221: (Function.Injective f)
-0565             WHNF_CORE #222: (Function.Injective f)
-0566               WHNF_CORE #223: Function.Injective
+0564           WHNF #221 (reduce to expose a function type): (Function.Injective f)
+0565             WHNF_CORE #222 (reduce without unfolding): (Function.Injective f)
+0566               WHNF_CORE #223 (reduce the function part): Function.Injective
 0567               RETURN #223: Function.Injective
 0568             RETURN #222: (Function.Injective f)
-0569             UNFOLD #224: Function.Injective
+0569             UNFOLD #224 (unfold the head definition): Function.Injective
 0570             RETURN #224: (fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂)))))))
-0571             WHNF_CORE #225: ((fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))))) α β f)
-0572               WHNF_CORE #226: (fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂)))))))
+0571             WHNF_CORE #225 (reduce without unfolding): ((fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))))) α β f)
+0572               WHNF_CORE #226 (reduce the function part): (fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂)))))))
 0573               RETURN #226: (fun {α : Type} => (fun {β : Type} => (fun (f : (α → β)) => (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂)))))))
-0574               WHNF_CORE #227: (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))
+0574               WHNF_CORE #227 (substitute the arguments (beta)): (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))
 0575               RETURN #227: (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))
 0576             RETURN #225: (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))
-0577             UNFOLD #228: (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))
+0577             UNFOLD #228 (unfold the head definition): (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))
 0578             RETURN #228: no unfolding
 0579           RETURN #221: (∀ ⦃a₁ : α⦄, (∀ ⦃a₂ : α⦄, (((f a₁) = (f a₂)) → (a₁ = a₂))))
-0580           CHECK #229: x
+0580           CHECK #229 (type of the argument): x
 0581             CACHE HIT: m_infer_type[infer_only]
 0582           RETURN #229: α
 0583           ARGUMENT TYPE: α
 0583           EXPECTED TYPE: α
-0584           DEFEQ #230: α  =?=  α
+0584           DEFEQ #230 (argument has the expected type): α  =?=  α
 0585           RETURN #230: true
 0586         RETURN #219: (∀ ⦃a₂ : α⦄, (((f x) = (f a₂)) → (x = a₂)))
-0587         CHECK #231: y
+0587         CHECK #231 (type of the argument): y
 0588           CACHE HIT: m_infer_type[infer_only]
 0589         RETURN #231: α
 0590         ARGUMENT TYPE: α
 0590         EXPECTED TYPE: α
-0591         DEFEQ #232: α  =?=  α
+0591         DEFEQ #232 (argument has the expected type): α  =?=  α
 0592         RETURN #232: true
 0593       RETURN #218: (((f x) = (f y)) → (x = y))
-0594       CHECK #233: h1
+0594       CHECK #233 (type of the argument): h1
 0595       RETURN #233: ((f x) = (f y))
 0596       ARGUMENT TYPE: ((f x) = (f y))
 0596       EXPECTED TYPE: ((f x) = (f y))
-0597       DEFEQ #234: ((f x) = (f y))  =?=  ((f x) = (f y))
+0597       DEFEQ #234 (argument has the expected type): ((f x) = (f y))  =?=  ((f x) = (f y))
 0598       RETURN #234: true
 0599     RETURN #217: (x = y)
-0600     DEFEQ #235: (x = y)  =?=  (x = y)
+0600     DEFEQ #235 (value has the declared type): (x = y)  =?=  (x = y)
 0601     RETURN #235: true
 0602     CONTEXT: h2 : (x = y) := (hf x y h1)
-0603     CHECK #236: h2
+0603     CHECK #236 (type of the body): h2
 0604     RETURN #236: (x = y)
 0605   RETURN #132: (x = y)
-0606 RETURN #69: (∀ {α : Type}, (∀ {β : Type}, (∀ {γ : Type}, (∀ {f : (α → β)}, (∀ {g : (β → γ)}, ((Function.Injective g) → ((Function.Injective f) → (∀ (x : α), (∀ (y : α), ((((g ∘ f) x) = ((g ∘ f) y)) → (x = y)))))))))))
+0606 RETURN #69: (∀ {α : Type}, (∀ {β : Type}, (∀ {γ : Type}, (∀ {f : (α → β)}, (∀ {g : (β → γ)}, ((Function.Injective g) → ((Function.Injective f) → (∀ (x : α), (∀ (y : α), (((Function.comp g f x) = (Function.comp g f y)) → (x = y)))))))))))

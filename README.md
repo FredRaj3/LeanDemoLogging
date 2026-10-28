@@ -1,12 +1,15 @@
 # LeanDemoLogging
 
-This project records the **actual C++ kernel execution** while Lean checks
-`inj_comp`. It has its own copy of the demo and its own Lean source checkout and
-executable. The original `../LeanDemo` project is not used as a build directory.
+This project records the **actual C++ kernel execution** while Lean checks a
+theorem. Any theorem can be traced; the included demo is `inj_comp` in
+`LeanDemoLogging/KernelDemo.lean`. It has its own copy of the demo and its own
+Lean source checkout and executable. The original `../LeanDemo` project is not
+used as a build directory.
 
 ## View or regenerate the trace
 
-Open **[traces/inj_comp.html](traces/inj_comp.html)** in a browser. All recorded
+Open `traces/<theorem>.html` in a browser, for example
+**[traces/inj_comp.html](traces/inj_comp.html)**. All recorded
 events appear in execution order, with each return after its nested calls.
 The colored margins identify statement checking (ochre), proof checking (blue),
 and the final type comparison (purple). Select a row to highlight its enclosing
@@ -20,23 +23,24 @@ A unique, exact text match is highlighted in the elaborated expression. This is
 text matching, not a source map; ambiguous or absent matches are left unmarked.
 “All arguments and universes” changes only the expression formatting.
 
-From this directory, regenerate the trace with:
+From this directory, record a theorem with its Lean file and full name:
 
 ```sh
-python3 scripts/trace.py
+python3 scripts/trace.py --file LeanDemoLogging/KernelDemo.lean --declaration inj_comp
 ```
 
 When this folder is open in VS Code, the task **Record the actual kernel trace**
-runs the same command. The `.lean` file remains editable in the usual way.
+runs the same command on the open file and asks for the theorem name. The
+`.lean` file remains editable in the usual way.
 
-Generated files:
+Generated files, named after the theorem:
 
-- `traces/inj_comp.html`: chronological events with collapsible calls and a proof panel.
-- `traces/inj_comp.txt`: complete indented event log.
-- `traces/inj_comp.proof.txt`: only the proof-checking phase.
-- `traces/inj_comp.jsonl`: original events written by the kernel.
-- `traces/inj_comp.metadata.json`: executable version, invocation, and source snapshot.
-- `traces/inj_comp.stdout.log`: ordinary Lean output, including the old replay.
+- `traces/<theorem>.html`: chronological events with collapsible calls and a proof panel.
+- `traces/<theorem>.txt`: complete indented event log.
+- `traces/<theorem>.proof.txt`: only the proof-checking phase.
+- `traces/<theorem>.jsonl`: original events written by the kernel.
+- `traces/<theorem>.metadata.json`: executable version, invocation, and source snapshot.
+- `traces/<theorem>.stdout.log`: ordinary Lean output for the whole file.
 
 The HTML and text views are generated from the recorded events. They do not run
 a substitute checker or reconstruct an imagined sequence of checks.
@@ -54,14 +58,21 @@ a substitute checker or reconstruct an imagined sequence of checks.
 - `argument`: the actual and expected types of a function's argument.
 - `cache`: reuse a previously computed type or reduction.
 
+Each call also shows its purpose, such as “type of the argument”. The kernel
+code that makes the call records it, so it is part of the recording, not
+inferred later.
+
 The kernel logs three phases: checking the theorem statement, checking the
 proof, and comparing the inferred and declared types. It may revisit
 expressions or use cached results. Those events are preserved.
 
 The display printer traverses expressions without type-checking or reducing
-them. It uses the local context to display names such as `h0`, `h1`, and `h2`.
-The regular view uses equality and composition notation. “Show all arguments
-and universes” exposes their explicit arguments and universe parameters. Both
+them. It uses the local context to display variable names.
+The regular view writes `a = b` for `Eq` and hides implicit arguments: an
+argument is hidden when its binder in the function's declared type is `{}`,
+`⦃⦄`, or `[]`. An application whose arguments would all be hidden is shown in
+full with `@`, for example `@Eq γ`. “Show all arguments and universes” exposes
+every argument and universe parameter. Both
 views are readable renderings of core expressions, rather than a serialized
 syntax-tree dump. Internal variable IDs are retained on context events in the
 JSON file.
@@ -85,7 +96,7 @@ These two environment variables are **custom additions in this build**, not
 standard Lean options:
 
 ```text
-LEAN_KERNEL_TRACE_DECL=inj_comp
+LEAN_KERNEL_TRACE_DECL=<full theorem name>
 LEAN_KERNEL_TRACE_FILE=/absolute/path/to/events.jsonl
 ```
 
@@ -125,15 +136,16 @@ uv pip install --python .build-tools/bin/python cmake==3.31.6
 ## Verification
 
 ```sh
-python3 scripts/verify.py
+python3 scripts/verify.py --file LeanDemoLogging/KernelDemo.lean --declaration inj_comp
 ```
 
 This checks that the original release and the modified executable produce the
-same demo output, that logging does not change that output, that the recorded
-calls and returns balance, and that the trace contains the intermediate proofs
-and the expected unfolding. It also submits a deliberately wrong application
-directly to the kernel and verifies its rejection. The declaration filter and
-the original demo's saved file hashes are checked too.
+same output for the file, that logging does not change that output, that the
+recorded calls and returns balance, and that the trace has top-level checks of
+the statement and proof and a successful final comparison. It also submits a
+deliberately wrong application directly to the kernel and verifies its
+rejection. The declaration filter and, when `../LeanDemo` exists, the original
+demo's saved file hashes are checked too.
 
 The rejection test has its own trace at
 `traces/rejected-application.html`. Its `exception` result is intentional.

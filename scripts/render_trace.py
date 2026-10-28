@@ -28,7 +28,8 @@ def read_events(path):
 def description(e):
     kind = e['event']
     if kind == 'enter':
-        s = f"{e['operation'].upper()} #{e['call']}: {e['expr']}"
+        purpose = f" ({e['purpose']})" if 'purpose' in e else ''
+        s = f"{e['operation'].upper()} #{e['call']}{purpose}: {e['expr']}"
         if 'other' in e:
             s += '  =?=  ' + e['other']
         return s
@@ -103,6 +104,8 @@ def html_view(events, source=None):
         else:
             body = escape(description(e))
         call = f'<span class="call-id">call {e["call"]}</span>' if 'call' in e else ''
+        if 'purpose' in e:
+            call += f'<span class="purpose">{escape(e["purpose"])}</span>'
         rows.append(
             f'<div class="event" id="event-{e["seq"]}" data-seq="{e["seq"]}" '
             f'data-phase="{escape(e["phase"], quote=True)}" data-kind="{kind}" '

@@ -1,5 +1,6 @@
 /* Teaching trace for the real Lean kernel. Logging never calls a type checker. */
 #pragma once
+#include <algorithm>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -7,10 +8,23 @@
 #include <string>
 #include <vector>
 #include "kernel/local_ctx.h"
+#include "kernel/environment.h"
 
 namespace lean {
 namespace demo_trace {
 using fields = std::vector<std::pair<std::string, std::string>>;
+
+struct state {
+    std::ofstream file;
+    std::ostream * out = &std::cerr;
+    environment const * env = nullptr;
+    char const * purpose = nullptr;
+    unsigned depth = 0;
+    unsigned sequence = 0;
+    unsigned next_call = 0;
+    std::string phase = "declaration";
+};
+inline state *& current() { static thread_local state * s = nullptr; return s; }
 
 inline std::string name_string(name const & n) {
     std::ostringstream out; out << n; return out.str();
@@ -38,11 +52,31 @@ inline std::string json_string(std::string const & s) {
 }
 
 /* A structural printer: it resolves variable names, but performs no reduction.
-   The core view retains all constant arguments and universe parameters. */
+   The regular view hides implicit arguments, as Lean's own display does.
+   The core view retains all arguments and universe parameters. */
 class printer {
     local_ctx const & m_ctx;
     bool m_core;
+    environment const * m_env;
     std::vector<std::string> m_bound;
+    /* An argument is shown if its binder in the head's declared type is explicit.
+       Arguments beyond the syntactic Pi binders of that type are shown. */
+    std::vector<bool> shown_arguments(expr const & head, unsigned n) {
+        std::vector<bool> shown(n, true);
+        expr t;
+        if (is_constant(head) && m_env) {
+            auto info = m_env->find(const_name(head));
+            if (!info) return shown;
+            t = info->get_type();
+        } else if (is_fvar(head)) {
+            auto d = m_ctx.find_local_decl(head);
+            if (!d) return shown;
+            t = d->get_type();
+        } else return shown;
+        for (unsigned i = 0; i < n && is_pi(t); ++i, t = binding_body(t))
+            shown[i] = is_explicit(binding_info(t));
+        return shown;
+    }
     std::string binder(expr const & e, bool lambda) {
         std::string n = name_string(binding_name(e));
         std::string domain = print(binding_domain(e));
@@ -58,7 +92,8 @@ class printer {
             + (lambda ? " => " : ", ") + body + ")";
     }
 public:
-    printer(local_ctx const & ctx, bool core): m_ctx(ctx), m_core(core) {}
+    printer(local_ctx const & ctx, bool core):
+        m_ctx(ctx), m_core(core), m_env(current() ? current()->env : nullptr) {}
     std::string print(expr const & e) {
         switch (e.kind()) {
         case expr_kind::FVar:
@@ -91,20 +126,19 @@ public:
         case expr_kind::App: {
             buffer<expr> args;
             expr const & head = get_app_args(e, args);
-            if (!m_core && is_constant(head)) {
-                std::string n = name_string(const_name(head));
-                if (n == "Eq" && args.size() == 3)
-                    return "(" + print(args[1]) + " = " + print(args[2]) + ")";
-                if (n == "Function.Injective" && args.size() == 3)
-                    return "(Function.Injective " + print(args[2]) + ")";
-                if (n == "Function.comp" && args.size() >= 5) {
-                    std::string s = "(" + print(args[3]) + " ∘ " + print(args[4]) + ")";
-                    for (unsigned i = 5; i < args.size(); ++i) s = "(" + s + " " + print(args[i]) + ")";
-                    return s;
-                }
+            if (!m_core && is_constant(head) && const_name(head) == name("Eq") && args.size() == 3)
+                return "(" + print(args[1]) + " = " + print(args[2]) + ")";
+            std::vector<bool> shown(args.size(), true);
+            bool all_hidden = false;
+            if (!m_core) {
+                shown = shown_arguments(head, args.size());
+                all_hidden = std::find(shown.begin(), shown.end(), true) == shown.end();
             }
-            std::string s = "(" + print(head);
-            for (auto const & a : args) s += " " + print(a);
+            // A partial application with only implicit arguments keeps them, marked with `@`.
+            if (all_hidden) shown.assign(args.size(), true);
+            std::string s = std::string(all_hidden ? "(@" : "(") + print(head);
+            for (unsigned i = 0; i < args.size(); ++i)
+                if (shown[i]) s += " " + print(args[i]);
             return s + ")";
         }
         case expr_kind::Lambda: return binder(e, true);
@@ -130,16 +164,6 @@ public:
     }
 };
 
-struct state {
-    std::ofstream file;
-    std::ostream * out = &std::cerr;
-    unsigned depth = 0;
-    unsigned sequence = 0;
-    unsigned next_call = 0;
-    std::string phase = "declaration";
-};
-inline state *& current() { static thread_local state * s = nullptr; return s; }
-
 inline void emit(char const * event, fields const & values = {}) {
     if (!current()) return;
     auto & s = *current();
@@ -155,13 +179,19 @@ inline void phase(char const * label) {
     current()->phase = label; emit("phase", {{"name", label}});
 }
 
+/* Kernel code states the reason for its next traced call, which records and clears it.
+   The two-argument form sets the reason after `value` is computed, and returns `value`. */
+inline void purpose(char const * text) { if (current()) current()->purpose = text; }
+template<typename T> T const & purpose(char const * text, T const & value) { purpose(text); return value; }
+
 class declaration_scope {
     state m_state;
     state * m_previous = nullptr;
     bool m_enabled = false;
     bool m_accepted = false;
 public:
-    explicit declaration_scope(name const & n) {
+    declaration_scope(environment const & env, name const & n) {
+        m_state.env = &env;
         char const * filter = std::getenv("LEAN_KERNEL_TRACE_DECL");
         if (!filter || name_string(n) != filter) return;
         char const * path = std::getenv("LEAN_KERNEL_TRACE_FILE");
@@ -204,6 +234,7 @@ public:
             f.push_back({"other", printer(ctx, false).print(*other)});
             f.push_back({"other_core", printer(ctx, true).print(*other)});
         }
+        if (current()->purpose) { f.push_back({"purpose", current()->purpose}); current()->purpose = nullptr; }
         emit("enter", f); ++current()->depth;
     }
     expr finish(expr const & e) {
